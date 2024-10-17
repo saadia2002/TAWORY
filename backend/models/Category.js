@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Service = require('./Service'); // Chemin correct vers le fichier du modèle Service
 
 // Schéma pour les catégories de service
 const categorySchema = new mongoose.Schema({

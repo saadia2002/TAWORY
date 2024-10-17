@@ -4,14 +4,14 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/auth');
 const cors = require('cors');
-// Use the user routes
-
+const categoryRoutes = require('./routes/categoryRoutes'); // Importer les routes des catégories
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 // Middleware
 app.use(cors()); // Permet toutes les origines
 app.use(express.json()); // Pour parser les requêtes JSON
@@ -29,8 +29,11 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('MongoDB connection error:', err);
   });
 
+// Utilisation des routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes); // Ajout des routes pour les catégories
+
 // Basic route
 app.get('/', (req, res) => {
   res.send('API is running...');

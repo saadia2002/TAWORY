@@ -20,11 +20,6 @@ const serviceProviderSchema = new mongoose.Schema({
     phone: { type: String },
     address: { type: String }
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true
-  },
   services: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Service'
