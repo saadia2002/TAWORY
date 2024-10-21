@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/auth');
+const serviceRoutes = require('./routes/serviceRoutes');
 const cors = require('cors');
 // Use the user routes
 
@@ -31,7 +32,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-// Basic route
+app.use('/api/service', serviceRoutes);
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
