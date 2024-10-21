@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Service = require('./Service');
 
 // Schéma pour les catégories de service
 const categorySchema = new mongoose.Schema({
@@ -11,10 +12,12 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String
   },
-  // Liste de services appartenant à cette catégorie
+  icon: {
+    type: String, // Stocker l'icône sous forme de base64 (chaîne de caractères)
+  },
   services: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Service' // Référence au modèle 'Service'
+    ref: 'Service'
   }]
 }, {
   timestamps: true

@@ -5,17 +5,19 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/auth');
 const serviceRoutes = require('./routes/serviceRoutes');
 const cors = require('cors');
-// Use the user routes
-
+const categoryRoutes = require('./routes/categoryRoutes'); // Importer les routes des catégories
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 // Middleware
 app.use(cors()); // Permet toutes les origines
 app.use(express.json()); // Pour parser les requêtes JSON
+
+app.use(express.urlencoded({ extended: true })); // Pour traiter les données d'URL encodées (comme pour les formulaires)
 
 // Middleware to parse JSON data
 app.use(express.json());
@@ -30,9 +32,16 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('MongoDB connection error:', err);
   });
 
+  app.use((req, res, next) => {
+    console.log(`${req.method} request for '${req.url}'`);
+    next();
+  });
+  
+// Utilisation des routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/service', serviceRoutes);
+app.use('/api/categories', categoryRoutes);
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
