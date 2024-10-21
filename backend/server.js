@@ -16,6 +16,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cors()); // Permet toutes les origines
 app.use(express.json()); // Pour parser les requêtes JSON
 
+app.use(express.urlencoded({ extended: true })); // Pour traiter les données d'URL encodées (comme pour les formulaires)
+
 // Middleware to parse JSON data
 app.use(express.json());
 console.log(require('crypto').randomBytes(32).toString('hex'));
@@ -29,6 +31,11 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('MongoDB connection error:', err);
   });
 
+  app.use((req, res, next) => {
+    console.log(`${req.method} request for '${req.url}'`);
+    next();
+  });
+  
 // Utilisation des routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);

@@ -47,6 +47,8 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import CategoryManager from "screen/CategoryManager";
+import Categories from "screen/CategoryManager";
 
 const routes = [
   {
@@ -64,6 +66,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Categories",
+    key: "categories",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/categories",
+    component: <Categories />,
   },
   {
     type: "collapse",
