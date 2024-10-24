@@ -5,13 +5,20 @@ const Category = require('../models/Category');
 
 // Configuration de multer pour gérer le téléchargement de fichiers
 const storage = multer.memoryStorage(); // Stockage en mémoire, tu peux aussi configurer un chemin local
-const upload = multer({ storage: storage });
+// const upload = multer({
+//   limits: {
+//     fileSize: 10 * 1024 * 1024, // 10 MB
+//     fieldSize: 10 * 1024 * 1024 // 10 MB
+//   }
+// });
 
 // Créer une nouvelle catégorie avec upload d'image
 router.post('/', upload.single('image'), async (req, res) => {
   const { name, description } = req.body;
   const image = req.file ? req.file.buffer.toString('base64') : null; // Convertir le fichier en base64
-
+  console.log("hani hnaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  console.log(image)
+  // console.log(req)
   try {
     const category = new Category({
       name,
@@ -48,7 +55,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const categories = await Category.find().populate('services');
-    console.log(categories);
+    // console.log(categories);
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -70,6 +77,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  console.log("waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  console.log('Received ID:', req.params.id);  // Log the received ID
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: 'Catégorie non trouvée' });
+    }
+    res.status(200).json({ message: 'Catégorie supprimée avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // Mettre à jour une catégorie
 router.put('/:id', async (req, res) => {
   const { name, description, icon } = req.body;

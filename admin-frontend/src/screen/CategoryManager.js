@@ -23,6 +23,15 @@ const RowShape = PropTypes.shape({
   }).isRequired,
 });
 
+// Composant pour afficher l'icône
+const IconCell = ({ value }) => {
+  return <img src={value} alt="icon" style={{ width: "30px", height: "30px" }} />;
+};
+
+IconCell.propTypes = {
+  value: PropTypes.string.isRequired, // Validation pour la prop value
+};
+
 const ActionCell = ({ row, onEdit, onDelete }) => (
   <MDBox display="flex" alignItems="center">
     <MDButton variant="text" color="info" onClick={() => onEdit(row.original)}>
@@ -54,7 +63,15 @@ const Categories = () => {
     try {
       const response = await fetch("http://localhost:5000/api/categories");
       const data = await response.json();
-      setCategories(data);
+
+      // Si l'image est en base64 dans vos données, assurez-vous que le champ est correctement rempli
+      const categoriesWithBase64 = data.map((category) => ({
+        ...category,
+        icon: category.icon ? `data:image/jpeg;base64,${category.icon}` : null, // Mettez à jour en fonction du type d'image
+      }));
+
+      setCategories(categoriesWithBase64);
+      console.log(categoriesWithBase64);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -69,26 +86,26 @@ const Categories = () => {
     setCurrentCategory({ ...currentCategory, image: file });
     setPreviewImage(URL.createObjectURL(file));
   };
+
   const handleCreate = async () => {
     try {
       const formData = new FormData();
       formData.append("name", currentCategory.name);
       formData.append("description", currentCategory.description);
 
-      // Si l'image est présente, la convertir en base64
+      // Modifié : Ajouter directement le fichier image sans conversion en base64
       if (currentCategory.image) {
-        const base64Image = await convertToBase64(currentCategory.image);
-        formData.append("image", base64Image);
-      }
+        formData.append("image", currentCategory.image); // Envoyer le fichier directement
 
-      console.log("Creating category with data:", {
-        name: currentCategory.name,
-        description: currentCategory.description,
-        image: currentCategory.image, // Affiche le nom du fichier image
-      });
+        // Debug pour vérifier le contenu du FormData
+        formData.forEach((value, key) => {
+          console.log("FormData content:", key, value);
+        });
+      }
 
       const response = await fetch("http://localhost:5000/api/categories/", {
         method: "POST",
+        // Supprimez le header Content-Type pour laisser le navigateur le définir automatiquement
         body: formData,
       });
 
@@ -106,15 +123,7 @@ const Categories = () => {
     }
   };
 
-  // Fonction pour convertir l'image en base64
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // Vous pouvez supprimer la fonction convertToBase64 car elle n'est plus nécessaire
 
   const handleUpdate = async () => {
     try {
@@ -122,7 +131,8 @@ const Categories = () => {
       formData.append("name", currentCategory.name);
       formData.append("description", currentCategory.description);
       if (currentCategory.image) {
-        formData.append("image", currentCategory.image);
+        const base64Image = await convertToBase64(currentCategory.image);
+        formData.append("icon", base64Image);
       }
 
       // Log des données avant l'envoi
@@ -161,12 +171,18 @@ const Categories = () => {
   };
 
   const columns = [
+    {
+      Header: "Icon",
+      accessor: "icon",
+      width: "10%",
+      Cell: IconCell, // Utiliser le composant IconCell
+    },
     { Header: "Name", accessor: "name", width: "25%" },
-    { Header: "Description", accessor: "description", width: "45%" },
+    { Header: "Description", accessor: "description", width: "40%" },
     {
       Header: "Actions",
       accessor: "actions",
-      width: "30%",
+      width: "25%",
       Cell: (cellProps) => (
         <ActionCell
           row={cellProps.row}
@@ -257,8 +273,8 @@ const Categories = () => {
                       </MDButton>
                       {editMode && (
                         <MDButton
-                          variant="outlined"
-                          color="info"
+                          variant="gradient"
+                          color="error"
                           onClick={() => {
                             setEditMode(false);
                             setCurrentCategory({ name: "", description: "", image: null });
@@ -272,13 +288,15 @@ const Categories = () => {
                     </Grid>
                   </Grid>
                 </MDBox>
-                <DataTable
-                  table={{ columns, rows: categories }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
+                <MDBox>
+                  <DataTable
+                    table={{ columns, rows: categories }}
+                    isSorted={false}
+                    showTotalEntries={false}
+                    entriesPerPage={false}
+                    onRowClick={(row) => console.log(row)}
+                  />
+                </MDBox>
               </MDBox>
             </Card>
           </Grid>
