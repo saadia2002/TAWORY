@@ -119,7 +119,6 @@ const UsersManager = () => {
     }
   };
 
-
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/api/users/${id}`, {
@@ -140,7 +139,7 @@ const UsersManager = () => {
   };
 
   const handleEdit = (user) => {
-    const formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0]; // Format "yyyy-MM-dd"
+    const formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split("T")[0]; // Format "yyyy-MM-dd"
 
     setCurrentUser({
       ...user,
@@ -150,8 +149,6 @@ const UsersManager = () => {
     setEditMode(true);
     setImagePreview(user.image); // Affiche l'image existante
   };
-
-
 
   const getImagePath = (imageName) => {
     return `/img/${imageName}`; // Changez cela en fonction de la structure de votre projet
@@ -173,132 +170,138 @@ const UsersManager = () => {
       accessor: "actions",
       width: "10%",
       Cell: ({ row }) => (
-          <MDBox display="flex" alignItems="center">
-            <MDButton
-                variant="outlined"
-                color="info"
-                onClick={() => handleEdit(row.original)} // Prépare l'édition de l'utilisateur
-            >
-              Edit
-            </MDButton>
-            <MDButton
-                variant="outlined"
-                color="error"
-                onClick={() => handleDelete(row.original._id)} // Supprime l'utilisateur
-                sx={{ ml: 1 }}
-            >
-              Delete
-            </MDButton>
-          </MDBox>
+        <MDBox display="flex" alignItems="center">
+          <MDButton
+            variant="outlined"
+            color="info"
+            onClick={() => handleEdit(row.original)} // Prépare l'édition de l'utilisateur
+          >
+            Edit
+          </MDButton>
+          <MDButton
+            variant="outlined"
+            color="error"
+            onClick={() => handleDelete(row.original._id)} // Supprime l'utilisateur
+            sx={{ ml: 1 }}
+          >
+            Delete
+          </MDButton>
+        </MDBox>
       ),
     },
   ];
 
   return (
-      <DashboardLayout>
-        <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox
-                    mx={2}
-                    mt={-3}
-                    py={3}
-                    px={2}
-                    variant="gradient"
-                    bgColor="info"
-                    borderRadius="lg"
-                    coloredShadow="info"
-                >
-                  <MDTypography variant="h6" color="white">
-                    Users Management
-                  </MDTypography>
-                </MDBox>
-                <MDBox pt={3}>
-                  <MDBox p={3}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} md={4}>
-                        <MDInput
-                            label="User Name"
-                            fullWidth
-                            value={currentUser.name}
-                            onChange={(e) =>
-                                setCurrentUser({ ...currentUser, name: e.target.value })
-                            }
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <MDInput
-                            label="Email"
-                            fullWidth
-                            value={currentUser.email}
-                            onChange={(e) =>
-                                setCurrentUser({ ...currentUser, email: e.target.value })
-                            }
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <MDInput
-                            label="Password"
-                            type="password"
-                            fullWidth
-                            value={currentUser.password}
-                            onChange={(e) =>
-                                setCurrentUser({ ...currentUser, password: e.target.value })
-                            }
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <MDInput
-                            label="Role"
-                            fullWidth
-                            value={currentUser.role}
-                            onChange={(e) =>
-                                setCurrentUser({ ...currentUser, role: e.target.value })
-                            }
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <MDInput
-                            type="date"
-                            label="Date of Birth"
-                            fullWidth
-                            value={currentUser.dateOfBirth}
-                            onChange={(e) =>
-                                setCurrentUser({ ...currentUser, dateOfBirth: e.target.value })
-                            }
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <input type="file" accept="image/*" onChange={handleImageChange} />
-                        {imagePreview && <img src={imagePreview} alt="Preview" width="100" height="100" />}
-                      </Grid>
+    <DashboardLayout>
+      <DashboardNavbar />
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Users Management
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <MDBox p={3}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={4}>
+                      <MDInput
+                        label="User Name"
+                        fullWidth
+                        value={currentUser.name}
+                        onChange={(e) => setCurrentUser({ ...currentUser, name: e.target.value })}
+                      />
                     </Grid>
-                    <MDBox display="flex" justifyContent="flex-end" mt={3}>
-                      <MDButton variant="outlined" color="success" onClick={editMode ? handleUpdate : handleCreate}>
-                        {editMode ? "Update User" : "Create User"}
-                      </MDButton>
-                      <MDButton variant="outlined" color="error" onClick={resetForm} sx={{ ml: 2 }}>
-                        Reset
-                      </MDButton>
-                    </MDBox>
+                    <Grid item xs={12} md={4}>
+                      <MDInput
+                        label="Email"
+                        fullWidth
+                        value={currentUser.email}
+                        onChange={(e) => setCurrentUser({ ...currentUser, email: e.target.value })}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <MDInput
+                        label="Password"
+                        type="password"
+                        fullWidth
+                        value={currentUser.password}
+                        onChange={(e) =>
+                          setCurrentUser({ ...currentUser, password: e.target.value })
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <label htmlFor="role">Role</label>
+                      <select
+                        id="role"
+                        value={currentUser.role}
+                        onChange={(e) => setCurrentUser({ ...currentUser, role: e.target.value })}
+                        style={{ width: "100%", padding: "10px" }} // Ajoutez des styles si nécessaire
+                      >
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="prestataire">Prestataire</option>
+                        <option value="user">User</option>
+                      </select>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <MDInput
+                        type="date"
+                        label="Date of Birth"
+                        fullWidth
+                        value={currentUser.dateOfBirth}
+                        onChange={(e) =>
+                          setCurrentUser({ ...currentUser, dateOfBirth: e.target.value })
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <input type="file" accept="image/*" onChange={handleImageChange} />
+                      {imagePreview && (
+                        <img src={imagePreview} alt="Preview" width="100" height="100" />
+                      )}
+                    </Grid>
+                  </Grid>
+                  <MDBox display="flex" justifyContent="flex-end" mt={3}>
+                    <MDButton
+                      variant="outlined"
+                      color="success"
+                      onClick={editMode ? handleUpdate : handleCreate}
+                    >
+                      {editMode ? "Update User" : "Create User"}
+                    </MDButton>
+                    <MDButton variant="outlined" color="error" onClick={resetForm} sx={{ ml: 2 }}>
+                      Reset
+                    </MDButton>
                   </MDBox>
                 </MDBox>
-                <MDBox>
-                  <DataTable
-                      table={{ columns, rows: users }}
-                      isSorted={false}
-                      canSearch
-                      noEndBorder
-                  />
-                </MDBox>
-              </Card>
-            </Grid>
+              </MDBox>
+              <MDBox>
+                <DataTable
+                  table={{ columns, rows: users }}
+                  isSorted={false}
+                  canSearch
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
           </Grid>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+        </Grid>
+      </MDBox>
+      <Footer />
+    </DashboardLayout>
   );
 };
 
