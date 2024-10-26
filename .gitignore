@@ -1,0 +1,11 @@
+# Ignorer tous les fichiers compilés
+*.class
+*.o
+*.exe
+
+# Ignorer les dossiers spécifiques
+./*/build
+./*/dist
+./*/venv
+/node_modules
+backend/node_modules/
