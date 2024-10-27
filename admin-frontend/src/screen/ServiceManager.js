@@ -294,8 +294,8 @@ const ServiceManager = () => {
                             description: e.target.value,
                           })
                         }
-                        multiline 
-                        rows={6} 
+                        multiline
+                        rows={6}
                       />
                     </Grid>
                     {/* <Grid item xs={12} md={4}>
