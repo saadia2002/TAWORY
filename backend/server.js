@@ -15,7 +15,6 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors()); // Permet toutes les origines
-app.use(express.json()); // Pour parser les requêtes JSON
 
 app.use(express.urlencoded({ extended: true })); // Pour traiter les données d'URL encodées (comme pour les formulaires)
 

@@ -139,15 +139,17 @@ const UsersManager = () => {
   };
 
   const handleEdit = (user) => {
-    const formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split("T")[0]; // Format "yyyy-MM-dd"
+    const formattedDateOfBirth = user.dateOfBirth
+      ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+      : ""; // Use an empty string if dateOfBirth is invalid
 
     setCurrentUser({
       ...user,
-      dateOfBirth: formattedDateOfBirth, // Date au format requis
+      dateOfBirth: formattedDateOfBirth,
     });
 
     setEditMode(true);
-    setImagePreview(user.image); // Affiche l'image existante
+    setImagePreview(user.image); // Show existing image preview if any
   };
 
   const getImagePath = (imageName) => {

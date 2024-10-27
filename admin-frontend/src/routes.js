@@ -46,7 +46,6 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import UsersManager from "screen/UsersManager"; // Fixed duplicate import
 
-
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Categories from "screen/CategoryManager";
