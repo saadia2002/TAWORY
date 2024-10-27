@@ -44,6 +44,8 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import UsersManager from "screen/UsersManager"; // Fixed duplicate import
+
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -61,11 +63,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    name: "Users Manager",
+    key: "users-manager", // Changed key to be more descriptive
+    icon: <Icon fontSize="small">group</Icon>, // Changed icon to be more representative
+    route: "/users",
+    component: <UsersManager />,
   },
   {
     type: "collapse",
