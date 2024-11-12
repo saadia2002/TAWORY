@@ -12,24 +12,22 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
-// Validation pour la structure de row
 const RowShape = PropTypes.shape({
-  _id: PropTypes.string.isRequired, // Validation pour l'ID
+  _id: PropTypes.string.isRequired,
   original: PropTypes.shape({
-    _id: PropTypes.string.isRequired, // Validation pour original._id
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    icon: PropTypes.string, // Validation pour l'icône (si tu l'utilises)
+    icon: PropTypes.string,
   }).isRequired,
 });
 
-// Composant pour afficher l'icône
 const IconCell = ({ value }) => {
   return <img src={value} alt="icon" style={{ width: "30px", height: "30px" }} />;
 };
 
 IconCell.propTypes = {
-  value: PropTypes.string.isRequired, // Validation pour la prop value
+  value: PropTypes.string.isRequired,
 };
 
 const ActionCell = ({ row, onEdit, onDelete }) => (
@@ -44,7 +42,7 @@ const ActionCell = ({ row, onEdit, onDelete }) => (
 );
 
 ActionCell.propTypes = {
-  row: RowShape.isRequired, // Assure que row est validé
+  row: RowShape.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
@@ -63,15 +61,11 @@ const Categories = () => {
     try {
       const response = await fetch("http://localhost:5000/api/categories");
       const data = await response.json();
-
-      // Si l'image est en base64 dans vos données, assurez-vous que le champ est correctement rempli
       const categoriesWithBase64 = data.map((category) => ({
         ...category,
-        icon: category.icon ? `data:image/jpeg;base64,${category.icon}` : null, // Mettez à jour en fonction du type d'image
+        icon: category.icon ? `data:image/jpeg;base64,${category.icon}` : null,
       }));
-
       setCategories(categoriesWithBase64);
-      console.log(categoriesWithBase64);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -93,19 +87,12 @@ const Categories = () => {
       formData.append("name", currentCategory.name);
       formData.append("description", currentCategory.description);
 
-      // Modifié : Ajouter directement le fichier image sans conversion en base64
       if (currentCategory.image) {
-        formData.append("image", currentCategory.image); // Envoyer le fichier directement
-
-        // Debug pour vérifier le contenu du FormData
-        formData.forEach((value, key) => {
-          console.log("FormData content:", key, value);
-        });
+        formData.append("image", currentCategory.image);
       }
 
       const response = await fetch("http://localhost:5000/api/categories/", {
         method: "POST",
-        // Supprimez le header Content-Type pour laisser le navigateur le définir automatiquement
         body: formData,
       });
 
@@ -123,40 +110,36 @@ const Categories = () => {
     }
   };
 
-  // Vous pouvez supprimer la fonction convertToBase64 car elle n'est plus nécessaire
-
   const handleUpdate = async () => {
     try {
+      // Création du FormData de la même manière que dans handleCreate
       const formData = new FormData();
       formData.append("name", currentCategory.name);
       formData.append("description", currentCategory.description);
-      if (currentCategory.image) {
-        const base64Image = await convertToBase64(currentCategory.image);
-        formData.append("icon", base64Image);
-      }
 
-      // Log des données avant l'envoi
-      console.log("Updating category with data:", {
-        name: currentCategory.name,
-        description: currentCategory.description,
-        image: currentCategory.image ? currentCategory.image.name : null, // Affiche le nom du fichier image
-      });
+      // Gestion de l'image de la même manière que dans handleCreate
+      if (currentCategory.image) {
+        formData.append("image", currentCategory.image);
+      }
 
       const response = await fetch(`http://localhost:5000/api/categories/${currentCategory._id}`, {
         method: "PUT",
         body: formData,
       });
+
       if (response.ok) {
         fetchCategories();
         setCurrentCategory({ name: "", description: "", image: null });
         setPreviewImage(null);
         setEditMode(false);
+      } else {
+        const errorData = await response.json();
+        console.error("Error response from server:", errorData);
       }
     } catch (error) {
       console.error("Error updating category:", error);
     }
   };
-
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/api/categories/${id}`, {
@@ -175,7 +158,7 @@ const Categories = () => {
       Header: "Icon",
       accessor: "icon",
       width: "10%",
-      Cell: IconCell, // Utiliser le composant IconCell
+      Cell: IconCell,
     },
     { Header: "Name", accessor: "name", width: "25%" },
     { Header: "Description", accessor: "description", width: "40%" },
@@ -252,6 +235,7 @@ const Categories = () => {
                         label="Upload Image"
                         fullWidth
                         onChange={handleImageChange}
+                        inputProps={{ accept: "image/*" }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -259,7 +243,7 @@ const Categories = () => {
                         <img
                           src={previewImage}
                           alt="Preview"
-                          style={{ width: "100px", height: "100px" }}
+                          style={{ width: "100px", height: "100px", objectFit: "cover" }}
                         />
                       )}
                     </Grid>
@@ -294,7 +278,6 @@ const Categories = () => {
                     isSorted={false}
                     showTotalEntries={false}
                     entriesPerPage={false}
-                    onRowClick={(row) => console.log(row)}
                   />
                 </MDBox>
               </MDBox>

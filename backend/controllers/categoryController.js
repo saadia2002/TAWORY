@@ -61,21 +61,23 @@ const categoryController = {
     }
   },
 
-  // Mettre à jour une catégorie
   updateCategory: async (req, res) => {
-    const { name, description, icon } = req.body;
-
     try {
       const category = await Category.findById(req.params.id);
-
+      
       if (!category) {
         return res.status(404).json({ message: 'Catégorie non trouvée' });
       }
-
-      category.name = name || category.name;
-      category.description = description || category.description;
-      category.icon = icon || category.icon;
-
+  
+      // Mise à jour des champs texte
+      if (req.body.name) category.name = req.body.name;
+      if (req.body.description) category.description = req.body.description;
+      
+      // Mise à jour de l'image si elle est fournie
+      if (req.file) {
+        category.icon = req.file.buffer.toString('base64');
+      }
+  
       await category.save();
       res.status(200).json(category);
     } catch (error) {

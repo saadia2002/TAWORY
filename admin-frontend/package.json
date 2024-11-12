@@ -69,7 +69,7 @@
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
     "sass-loader": "^12.3.0",
-    "selenium-webdriver": "^4.25.0",
+    "selenium": "^2.20.0",
     "semver": "^7.3.5",
     "source-map-loader": "^3.0.0",
     "style-loader": "^3.3.1",
@@ -77,6 +77,7 @@
     "stylis-plugin-rtl": "2.1.1",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
+    "unittest": "^1.0.0",
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
@@ -87,6 +88,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "test:e2e": "mocha src/tests/e2e/specs/**/*.test.js --timeout 10000",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "eslintConfig": {
@@ -109,6 +111,7 @@
   },
   "devDependencies": {
     "ajv": "^7.2.4",
+    "chai": "^5.1.2",
     "eslint": "8.39.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
@@ -116,7 +119,9 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
-    "prettier": "^2.8.8"
+    "mocha": "^10.7.3",
+    "prettier": "^2.8.8",
+    "selenium-webdriver": "^4.25.0"
   },
   "overrides": {
     "svgo": "3.0.2"
