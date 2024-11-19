@@ -16,30 +16,30 @@ export default class Onboarding extends React.Component {
         <StatusBar barStyle="light-content" />
         <Block flex center>
           <ImageBackground
-            source={{  uri: Images.Onboarding }}
-            style={{ height: height, width: width, marginTop: '-55%', zIndex: 1 }}
+            source={Images.tawory} 
+            style={{ height: height, width: width, zIndex: 1 }}
           />
         </Block>
         <Block flex space="between" style={styles.padded}>
           <Block flex space="around" style={{ zIndex: 2 }}>
             <Block>
-              <Block>
-                <Text color="white" size={60}>Material</Text>
-              </Block>
+              <Text size={20} >
+              Bienvenue sur 
+              </Text>
               <Block row>
-                <Text color="white" size={60}>Kit</Text>
+                <Text size={30}>TAWORY !</Text>
               </Block>
-              <Text size={16} color='rgba(255,255,255,0.6)'>
-                Fully coded React Native components.
+              <Text size={20} >
+              Trouvez des services adaptés à vos besoins en un clic
               </Text>
             </Block>
             <Block center>
               <Button
                 shadowless
                 style={styles.button}
-                color={materialTheme.COLORS.BUTTON_COLOR}
+                color="#6f3417"
                 onPress={() => navigation.navigate('App')}>
-                GET STARTED
+                C'est parti !
               </Button>
             </Block>
           </Block>

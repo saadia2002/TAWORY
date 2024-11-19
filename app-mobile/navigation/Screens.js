@@ -14,6 +14,7 @@ import SettingsScreen from "../screens/Settings";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import CategoriesScreen from "../screens/Categories";
+import ServicesScreen from '../screens/ServicesScreen';
 
 const { width } = Dimensions.get("screen");
 
@@ -27,7 +28,62 @@ const profile = {
   plan: "Pro",
   rating: 4.8,
 };
+// Dans votre fichier de navigation
+// import ServiceDetailsScreen from '../screens/ServiceDetailsScreen'; // À créer plus tard
 
+// // Dans votre CategoriesStack, ajoutez les nouveaux écrans
+// function CategoriesStack(props) {
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         mode: "card",
+//         headerShown: "screen",
+//       }}
+//     >
+//       <Stack.Screen
+//         name="Categories"
+//         component={CategoriesScreen}
+//         options={{
+//           header: ({ navigation, scene }) => (
+//             <Header
+//               title="Categories"
+//               scene={scene}
+//               navigation={navigation}
+//             />
+//           ),
+//         }}
+//       />
+//       <Stack.Screen
+//         name="Services"
+//         component={ServicesScreen}
+//         options={{
+//           header: ({ navigation, scene }) => (
+//             <Header
+//               back
+//               title="Services"
+//               scene={scene}
+//               navigation={navigation}
+//             />
+//           ),
+//         }}
+//       />
+//       <Stack.Screen
+//         name="ServiceDetails"
+//         component={ServiceDetailsScreen}
+//         options={{
+//           header: ({ navigation, scene }) => (
+//             <Header
+//               back
+//               title="Service Details"
+//               scene={scene}
+//               navigation={navigation}
+//             />
+//           ),
+//         }}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 // Ajout du nouveau Stack pour Categories
 function CategoriesStack(props) {
   return (
@@ -44,6 +100,21 @@ function CategoriesStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Categories"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
+      
+      <Stack.Screen
+        name="Services"
+        component={ServicesScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              back
+              title="Services"
               scene={scene}
               navigation={navigation}
             />

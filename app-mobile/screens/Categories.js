@@ -5,6 +5,7 @@ import {
   ScrollView, 
   Image, 
   ActivityIndicator,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
@@ -23,18 +24,17 @@ export default function Categories({ navigation }) {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://100.70.44.126:5000/api/categories');
+      const response = await fetch('http://100.70.44.54:5000/api/categories');
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.log('Error fetching categories:', error);
+      console.error('Error fetching categories:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const renderCategories = () => {
-    // Grouper les catégories par paires
     const rows = [];
     for (let i = 0; i < categories.length; i += 2) {
       rows.push(categories.slice(i, i + 2));
@@ -48,7 +48,11 @@ export default function Categories({ navigation }) {
         {rows.map((row, rowIndex) => (
           <View key={rowIndex} style={styles.row}>
             {row.map((category) => (
-              <Block key={category._id} style={styles.categoryCard}>
+              <TouchableOpacity
+                key={category._id}
+                style={styles.categoryCard}
+                onPress={() => navigation.navigate('Services', { category: category })}
+              >
                 {category.icon && (
                   <Image
                     source={{ uri: `data:image/jpeg;base64,${category.icon}` }}
@@ -67,15 +71,13 @@ export default function Categories({ navigation }) {
                 </Text>
                 <Text 
                   size={12} 
-                  color={theme.COLORS.MUTED} 
                   style={styles.categoryDescription}
                   numberOfLines={2}
                 >
                   {category.description}
                 </Text>
-              </Block>
+              </TouchableOpacity>
             ))}
-            {/* Ajouter un bloc vide si la dernière ligne n'a qu'une seule catégorie */}
             {row.length === 1 && <View style={styles.emptyCard} />}
           </View>
         ))}
@@ -85,9 +87,6 @@ export default function Categories({ navigation }) {
 
   return (
     <Block flex>
-      <Block style={styles.header}>
-        <Text h5 style={styles.headerTitle}>Catégories</Text>
-      </Block>
       {loading ? (
         <ActivityIndicator size="large" color={theme.COLORS.PRIMARY} style={styles.loader} />
       ) : (
@@ -98,22 +97,6 @@ export default function Categories({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingHorizontal: theme.SIZES.BASE,
-    paddingTop: theme.SIZES.BASE * 3,
-    paddingBottom: theme.SIZES.BASE,
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: theme.COLORS.BLACK,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    shadowOpacity: 0.2,
-    elevation: 4,
-    zIndex: 2,
-  },
-  headerTitle: {
-    fontWeight: '600',
-    textAlign: 'center'
-  },
   categoriesContainer: {
     padding: theme.SIZES.BASE,
   },
@@ -127,13 +110,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: theme.SIZES.BASE,
     width: CARD_WIDTH,
+    height: CARD_WIDTH * 1.2,
     alignItems: 'center',
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 0.1,
     elevation: 2,
-    aspectRatio: 1, // Rend la carte carrée
   },
   emptyCard: {
     width: CARD_WIDTH,
