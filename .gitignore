@@ -9,3 +9,4 @@
 ./*/venv
 /node_modules
 backend/node_modules/
+app-mobile/node_modules
