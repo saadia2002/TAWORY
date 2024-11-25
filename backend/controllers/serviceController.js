@@ -21,6 +21,23 @@ exports.getAllServices = async (req, res) => {
   }
 };
 
+exports.getAllServiceswithProvider = async (req, res) => {
+  try {
+    // Populate the serviceProvider field with user data where the role is 'prestataire'
+    const services = await Service.find()
+      .populate({
+        path: 'serviceProvider',
+        match: { role: 'prestataire' }, // Filtre pour ne ramener que les prestataires
+        select: 'name image' // Inclut uniquement les champs nécessaires
+      });
+
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Récupérer un service par ID
 exports.getServiceById = async (req, res) => {
   try {

@@ -1,34 +1,35 @@
 const mongoose = require('mongoose');
 
-// Définition du schéma utilisateur
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     required: true,
     unique: true,
+    lowercase: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   role: {
     type: String,
-    enum: ['admin', 'user', 'prestataire'], // Restreindre aux valeurs possibles
-    required: true,
+    enum: ['admin', 'prestataire', 'user'],
+    required: true
   },
   dateOfBirth: {
-    type: Date, // Utilisez le type Date pour la date de naissance
-    required: true, // Si vous souhaitez que ce champ soit obligatoire
+    type: Date,
+    required: true
   },
   image: {
-    type: String, // Utilisez un type String pour stocker l'URL de l'image
-    required: false, // Cela peut être facultatif, selon vos besoins
-  },
-}, { timestamps: true });
+    type: String, // Pour stocker l'image en base64
+    required: false
+  }
+}, {
+  timestamps: true
+});
 
-const User = mongoose.model('User', UserSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

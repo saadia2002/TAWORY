@@ -13,7 +13,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
-// Validation for row structure
 const RowShape = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   original: PropTypes.shape({
@@ -21,7 +20,7 @@ const RowShape = PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    category: PropTypes.string.isRequired, // For display, use the category name
+    category: PropTypes.string.isRequired,
   }).isRequired,
 });
 
@@ -45,6 +44,7 @@ ActionCell.propTypes = {
 const ServiceManager = () => {
   const [services, setServices] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [providers, setProviders] = useState([]); // Prestataires
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [editMode, setEditMode] = useState(false);
   const [currentService, setCurrentService] = useState({
@@ -64,9 +64,10 @@ const ServiceManager = () => {
       console.error("Error fetching services:", error);
     }
   };
+
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/categories"); // Mettez à jour l'URL pour récupérer les catégories
+      const response = await fetch("http://localhost:5000/api/categories");
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -74,78 +75,43 @@ const ServiceManager = () => {
     }
   };
 
-  useEffect(() => {
-    fetchServices();
-    fetchCategories();
-  }, []);
-
-  const handleCreate = async () => {
+  const fetchProviders = async () => {
     try {
-      // Assurez-vous que tous les champs sont remplis avant l'envoi
-      if (
-        !currentService.name ||
-        !currentService.description ||
-        !currentService.price ||
-        !currentService.category
-      ) {
-        console.error("All fields are required!");
-        return;
-      }
-
-      // Créez un objet avec les données du service
-      const serviceData = {
-        name: currentService.name,
-        description: currentService.description,
-        price: parseFloat(currentService.price), // S'assurer que le prix est un nombre
-        category: currentService.category,
-        serviceProvider: "653ad6c7f8d9471a948b9f7a",
-      };
-
-      console.log("Creating service with data:", serviceData);
-
-      // Envoyez la requête avec un body JSON
-      const response = await fetch("http://localhost:5000/api/services/services", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Spécifie que le corps de la requête est au format JSON
-        },
-        body: JSON.stringify(serviceData), // Convertit les données en JSON
-      });
-
-      if (response.ok) {
-        fetchServices(); // Rafraîchit la liste des services après la création
-        setCurrentService({
-          name: "",
-          description: "",
-          price: "",
-          category: "",
-          serviceProvider: "",
-        });
-      } else {
-        const errorData = await response.json();
-        console.error("Error response from server:", errorData);
-      }
+      const response = await fetch("http://localhost:5000/api/users");
+      const data = await response.json();
+      const filteredProviders = data.filter((user) => user.role === "prestataire");
+      setProviders(filteredProviders);
     } catch (error) {
-      console.error("Error creating service:", error);
+      console.error("Error fetching providers:", error);
     }
   };
 
-  const handleUpdate = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("name", currentService.name);
-      formData.append("description", currentService.description);
-      formData.append("price", currentService.price);
-      formData.append("category", currentService.category);
-      formData.append("serviceProvider", currentService.serviceProvider);
+  useEffect(() => {
+    fetchServices();
+    fetchCategories();
+    fetchProviders();
+  }, []);
 
-      const response = await fetch(
-        `http://localhost:5000/api/services/services/${currentService._id}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+  const handleCreateOrUpdate = async () => {
+    const url = editMode
+      ? `http://localhost:5000/api/services/services/${currentService._id}`
+      : "http://localhost:5000/api/services/services";
+    const method = editMode ? "PUT" : "POST";
+
+    try {
+      const serviceData = {
+        name: currentService.name,
+        description: currentService.description,
+        price: parseFloat(currentService.price),
+        category: currentService.category,
+        serviceProvider: currentService.serviceProvider,
+      };
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(serviceData),
+      });
 
       if (response.ok) {
         fetchServices();
@@ -157,26 +123,12 @@ const ServiceManager = () => {
           serviceProvider: "",
         });
         setEditMode(false);
+      } else {
+        const errorData = await response.json();
+        console.error("Error response from server:", errorData);
       }
     } catch (error) {
-      console.error("Error updating service:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/services/services/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        fetchServices();
-        // Show alert
-        setAlert({ show: true, message: "Service deleted successfully!", type: "success" });
-      }
-    } catch (error) {
-      console.error("Error deleting service:", error);
-      // Show alert for error
-      setAlert({ show: true, message: "Failed to delete service.", type: "danger" });
+      console.error("Error saving service:", error);
     }
   };
 
@@ -195,7 +147,16 @@ const ServiceManager = () => {
             setCurrentService(service);
             setEditMode(true);
           }}
-          onDelete={handleDelete}
+          onDelete={async (id) => {
+            try {
+              await fetch(`http://localhost:5000/api/services/services/${id}`, {
+                method: "DELETE",
+              });
+              fetchServices();
+            } catch (error) {
+              console.error("Error deleting service:", error);
+            }
+          }}
         />
       ),
     },
@@ -273,12 +234,35 @@ const ServiceManager = () => {
                           Select Category
                         </option>
                         {categories.map((category) => (
-                          <option
-                            key={category._id}
-                            value={category._id}
-                            style={{ fontSize: "0.875rem" }}
-                          >
+                          <option key={category._id} value={category._id}>
                             {category.name}
+                          </option>
+                        ))}
+                      </select>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <select
+                        value={currentService.serviceProvider}
+                        onChange={(e) =>
+                          setCurrentService({
+                            ...currentService,
+                            serviceProvider: e.target.value,
+                          })
+                        }
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "4px",
+                          borderColor: "#cccccc",
+                          fontSize: "0.875rem",
+                        }}
+                      >
+                        <option value="" style={{ fontSize: "0.875rem", color: "#cccccc" }}>
+                          Select Service Provider
+                        </option>
+                        {providers.map((provider) => (
+                          <option key={provider._id} value={provider._id}>
+                            {provider.name}
                           </option>
                         ))}
                       </select>
@@ -298,25 +282,8 @@ const ServiceManager = () => {
                         rows={6}
                       />
                     </Grid>
-                    {/* <Grid item xs={12} md={4}>
-                      <MDInput
-                        label="Service Provider"
-                        fullWidth
-                        value={currentService.serviceProvider}
-                        onChange={(e) =>
-                          setCurrentService({
-                            ...currentService,
-                            serviceProvider: e.target.value,
-                          })
-                        }
-                      />
-                    </Grid> */}
                     <Grid item xs={12}>
-                      <MDButton
-                        variant="gradient"
-                        color="info"
-                        onClick={editMode ? handleUpdate : handleCreate}
-                      >
+                      <MDButton variant="gradient" color="info" onClick={handleCreateOrUpdate}>
                         {editMode ? "Update Service" : "Add Service"}
                       </MDButton>
                       {editMode && (

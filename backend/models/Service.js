@@ -21,7 +21,7 @@ const serviceSchema = new mongoose.Schema({
   },
   serviceProvider: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ServiceProvider',
+    ref: 'User',
     required: true
   },
   reservations: [{

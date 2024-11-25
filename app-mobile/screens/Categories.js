@@ -24,7 +24,7 @@ export default function Categories({ navigation }) {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://100.70.44.54:5000/api/categories');
+      const response = await fetch('http://100.89.163.214:5000/api/categories');
       const data = await response.json();
       setCategories(data);
     } catch (error) {

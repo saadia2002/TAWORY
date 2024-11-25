@@ -8,6 +8,8 @@ router.post('/services', serviceController.createService);
 // Route pour récupérer tous les services
 router.get('/services', serviceController.getAllServices);
 
+router.get('/services2', serviceController.getAllServiceswithProvider);
+
 // Route pour récupérer un service par ID
 router.get('/services/:id', serviceController.getServiceById);
 
