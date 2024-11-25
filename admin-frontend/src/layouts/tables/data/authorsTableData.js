@@ -15,7 +15,7 @@ export default function Data() {
   const fetchData = async () => {
     try {
       console.log("Fetching user data...");
-      const response = await fetch("http://localhost:5000/api/users");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users`);
       const data = await response.json();
       console.log("Data received:", data);
 

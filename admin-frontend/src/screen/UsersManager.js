@@ -129,7 +129,7 @@ const UsersManager = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users`);
       const data = await response.json();
       const usersWithBase64 = data.map((user) => ({
         ...user,
@@ -164,7 +164,7 @@ const UsersManager = () => {
         formData.append("image", currentUser.image);
       }
 
-      const response = await fetch("http://localhost:5000/api/users/", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users/`, {
         method: "POST",
         body: formData,
       });

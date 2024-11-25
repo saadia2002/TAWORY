@@ -59,7 +59,8 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/categories");
+      // const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/categories`);
       const data = await response.json();
       const categoriesWithBase64 = data.map((category) => ({
         ...category,
@@ -90,8 +91,8 @@ const Categories = () => {
       if (currentCategory.image) {
         formData.append("image", currentCategory.image);
       }
-
-      const response = await fetch("http://localhost:5000/api/categories/", {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}:5000/api/categories/`, {
         method: "POST",
         body: formData,
       });
