@@ -60,7 +60,8 @@ const Categories = () => {
   const fetchCategories = async () => {
     try {
       // const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/categories`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`);
+      console.log(`${process.env.REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       const categoriesWithBase64 = data.map((category) => ({
         ...category,
@@ -92,7 +93,7 @@ const Categories = () => {
         formData.append("image", currentCategory.image);
       }
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}:5000/api/categories/`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/`, {
         method: "POST",
         body: formData,
       });
@@ -123,7 +124,7 @@ const Categories = () => {
         formData.append("image", currentCategory.image);
       }
 
-      const response = await fetch(`http://localhost:5000/api/categories/${currentCategory._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/${currentCategory._id}`, {
         method: "PUT",
         body: formData,
       });
@@ -143,7 +144,7 @@ const Categories = () => {
   };
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/categories/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {

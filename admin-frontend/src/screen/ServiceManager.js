@@ -57,7 +57,7 @@ const ServiceManager = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/services/services`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/services/services`);
       const data = await response.json();
       setServices(data);
     } catch (error) {
@@ -67,7 +67,7 @@ const ServiceManager = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/categories`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -77,7 +77,7 @@ const ServiceManager = () => {
 
   const fetchProviders = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`);
       const data = await response.json();
       const filteredProviders = data.filter((user) => user.role === "prestataire");
       setProviders(filteredProviders);
@@ -94,8 +94,8 @@ const ServiceManager = () => {
 
   const handleCreateOrUpdate = async () => {
     const url = editMode
-      ? `http://localhost:5000/api/services/services/${currentService._id}`
-      : `${process.env.REACT_APP_API_URL}:5000/api/services/services`;
+      ? `${process.env.REACT_APP_API_URL}/api/services/services/${currentService._id}`
+      : `${process.env.REACT_APP_API_URL}/api/services/services`;
     const method = editMode ? "PUT" : "POST";
 
     try {
@@ -149,7 +149,7 @@ const ServiceManager = () => {
           }}
           onDelete={async (id) => {
             try {
-              await fetch(`http://localhost:5000/api/services/services/${id}`, {
+              await fetch(`${process.env.REACT_APP_API_URL}/api/services/services/${id}`, {
                 method: "DELETE",
               });
               fetchServices();

@@ -129,7 +129,7 @@ const UsersManager = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`);
       const data = await response.json();
       const usersWithBase64 = data.map((user) => ({
         ...user,
@@ -164,7 +164,7 @@ const UsersManager = () => {
         formData.append("image", currentUser.image);
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}:5000/api/users/`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/`, {
         method: "POST",
         body: formData,
       });
@@ -196,7 +196,7 @@ const UsersManager = () => {
         formData.append("image", currentUser.image);
       }
 
-      const response = await fetch(`http://localhost:5000/api/users/${currentUser._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${currentUser._id}`, {
         method: "PUT",
         body: formData,
       });
@@ -215,7 +215,7 @@ const UsersManager = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {

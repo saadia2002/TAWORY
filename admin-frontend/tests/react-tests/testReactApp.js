@@ -8,7 +8,7 @@ async function testReactApp() {
 
   try {
     // Accéder à l'application React.js (assure-toi que l'application tourne sur ce port)
-    await driver.get('http://localhost:3000');
+    await driver.get('${process.env.REACT_APP_API_URL}:3000');
 
     // Vérifier le titre de la page
     let title = await driver.getTitle();

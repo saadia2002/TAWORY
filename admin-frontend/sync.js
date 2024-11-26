@@ -75,7 +75,7 @@ const insertSampleData = async () => {
 // Fonction pour synchroniser les données avec MongoDB
 const syncWithMongoDB = async (data) => {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}:5000/api/sync", data);
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/sync`, data);
     console.log("Synchronisation avec MongoDB réussie:", response.data);
   } catch (error) {
     console.error("Erreur de synchronisation avec MongoDB:", error);
@@ -85,7 +85,7 @@ const syncWithMongoDB = async (data) => {
 // Fonction pour récupérer les données de MongoDB qui ne sont pas dans PouchDB
 const fetchMissingDataFromMongoDB = async () => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}:5000/api/users`); // Assurez-vous que cette route existe
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users`); // Assurez-vous que cette route existe
     const mongoData = response.data;
 
     const localDocs = await localDB.allDocs({ include_docs: true });
