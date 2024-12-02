@@ -86,6 +86,10 @@ const RoleCell = ({ value }) => {
   );
 };
 
+RoleCell.propTypes = {
+  value: PropTypes.string.isRequired,
+};
+
 const RoleCellWrapper = ({ value }) => <RoleCell value={value} />;
 
 RoleCellWrapper.propTypes = {
@@ -196,10 +200,13 @@ const UsersManager = () => {
         formData.append("image", currentUser.image);
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${currentUser._id}`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/users/${currentUser._id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         fetchUsers();

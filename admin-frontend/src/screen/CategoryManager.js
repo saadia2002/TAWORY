@@ -124,10 +124,13 @@ const Categories = () => {
         formData.append("image", currentCategory.image);
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/${currentCategory._id}`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/categories/${currentCategory._id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         fetchCategories();
