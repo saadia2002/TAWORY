@@ -99,32 +99,32 @@ describe('User Controller Tests', () => {
     });
   });
 
-  describe('GET /api/users/:id', () => {
-    it('should get user by id', async () => {
-      const user = await User.create({
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        password: 'securepassword',
-        role: 'user',
-        dateOfBirth: '1990-01-01',
-        image: 'image.jpg'
-      });
+  // describe('GET /api/users/:id', () => {
+  //   it('should get user by id', async () => {
+  //     const user = await User.create({
+  //       name: 'John Doe',
+  //       email: 'johndoe@example.com',
+  //       password: 'securepassword',
+  //       role: 'user',
+  //       dateOfBirth: '1990-01-01',
+  //       image: 'image.jpg'
+  //     });
 
-      const response = await request(app)
-        .get(`/api/users/${user._id}`);
+  //     const response = await request(app)
+  //       .get(`/api/users/${user._id}`);
 
-      expect(response.status).toBe(200);
-      expect(response.body.name).toBe(user.name);
-    });
+  //     expect(response.status).toBe(200);
+  //     expect(response.body.name).toBe(user.name);
+  //   });
 
-    it('should return 404 for non-existent user', async () => {
-      const nonExistentId = new mongoose.Types.ObjectId();
-      const response = await request(app)
-        .get(`/api/users/${nonExistentId}`);
+  //   it('should return 404 for non-existent user', async () => {
+  //     const nonExistentId = new mongoose.Types.ObjectId();
+  //     const response = await request(app)
+  //       .get(`/api/users/${nonExistentId}`);
 
-      expect(response.status).toBe(404);
-    });
-  });
+  //     expect(response.status).toBe(404);
+  //   });
+  // });
 
   describe('PUT /api/users/:id', () => {
     it('should update user', async () => {

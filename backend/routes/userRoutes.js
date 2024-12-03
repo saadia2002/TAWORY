@@ -126,122 +126,20 @@
 //   }
 // });
 
-// module.exports = router;
+// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const User = require('../models/User');
+const userController = require('../controllers/userController');
 
-// Configuration de multer pour le stockage temporaire des fichiers
+// Configuration de multer
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Route pour créer un utilisateur
-router.post('/', upload.single('image'), async (req, res) => {
-  try {
-    const userData = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
-      dateOfBirth: req.body.dateOfBirth
-    };
-
-    // Si une image a été uploadée, la convertir en base64
-    if (req.file) {
-      const base64Image = req.file.buffer.toString('base64');
-      userData.image = base64Image;
-    }
-
-    // Logs pour le débogage
-    console.log('Received data:', {
-      ...userData,
-      password: '***hidden***'  // Ne pas logger le mot de passe
-    });
-
-    const user = new User(userData);
-    const savedUser = await user.save();
-    
-    res.status(201).json(savedUser);
-  } catch (error) {
-    console.error('Error creating user:', error);
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({
-        message: 'Validation error',
-        details: Object.values(error.errors).map(err => err.message)
-      });
-    }
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Route pour récupérer tous les utilisateurs
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find().select('-password'); // Exclure le mot de passe
-    res.status(200).json(users);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Route pour mettre à jour un utilisateur
-router.put('/:id', upload.single('image'), async (req, res) => {
-  try {
-    const userData = {
-      name: req.body.name,
-      email: req.body.email,
-      role: req.body.role,
-      dateOfBirth: req.body.dateOfBirth
-    };
-
-    // Ne mettre à jour le mot de passe que s'il est fourni
-    if (req.body.password) {
-      userData.password = req.body.password;
-    }
-
-    // Si une nouvelle image est uploadée
-    if (req.file) {
-      const base64Image = req.file.buffer.toString('base64');
-      userData.image = base64Image;
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      userData,
-      { new: true, runValidators: true }
-    ).select('-password');
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.json(updatedUser);
-  } catch (error) {
-    console.error('Error updating user:', error);
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({
-        message: 'Validation error',
-        details: Object.values(error.errors).map(err => err.message)
-      });
-    }
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Route pour supprimer un utilisateur
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json({ message: 'User deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
+// Routes utilisateur
+router.post('/', upload.single('image'), userController.createUser);
+router.get('/', userController.getAllUsers);
+router.put('/:id', upload.single('image'), userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;

@@ -41,7 +41,8 @@ exports.getAllServiceswithProvider = async (req, res) => {
 // Récupérer un service par ID
 exports.getServiceById = async (req, res) => {
   try {
-    const service = await Service.findById(req.params.id).populate('category serviceProvider reservations');
+    const service = await Service.findById(req.params.id);
+    // const service = await Service.findById(req.params.id).populate('category serviceProvider reservations');
     if (!service) {
       return res.status(404).json({ message: 'Service non trouvé' });
     }
