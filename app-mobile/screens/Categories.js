@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REACT_APP_API_URL } from '@env';
 import { 
   StyleSheet, 
   Dimensions, 
@@ -24,7 +25,8 @@ export default function Categories({ navigation }) {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://100.89.163.214:5000/api/categories');
+      console.log(REACT_APP_API_URL);
+      const response = await fetch(`${REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       setCategories(data);
     } catch (error) {

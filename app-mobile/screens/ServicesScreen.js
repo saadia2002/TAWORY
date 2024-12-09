@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REACT_APP_API_URL } from '@env';
 import { 
   StyleSheet, 
   ScrollView, 
@@ -21,7 +22,8 @@ export default function ServicesScreen({ navigation, route }) {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://100.89.163.214:5000/api/services/services2`);
+      console.log(REACT_APP_API_URL);
+      const response = await fetch(`${REACT_APP_API_URL}/api/services/services2`);
       const data = await response.json();
 
       // Transform the service data to include provider details

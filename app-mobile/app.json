@@ -24,6 +24,14 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f40f0450-34cb-4b59-b087-53e10b2f8236"
+      }
+    },
+    "android": {
+      "package": "tawory.com"
     }
   }
 }

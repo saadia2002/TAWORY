@@ -1,123 +1,106 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { Button, Block, Text, Input, theme } from 'galio-framework';
+import { StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { Block, Text, theme } from 'galio-framework';
 
-import { Icon, Product } from '../components/';
+const { width, height } = Dimensions.get('screen');
 
-const { width } = Dimensions.get('screen');
-import products from '../constants/products';
+// Importation des images locales
+import clientImage from '../constants/client.png';
+import prestataireImage from '../constants/pres.png';
 
 export default class Home extends React.Component {
-  renderSearch = () => {
-    const { navigation } = this.props;
-    const iconCamera = <Icon size={16} color={theme.COLORS.MUTED} name="zoom-in" family="material" />
-
-    return (
-      <Input
-        right
-        color="black"
-        style={styles.search}
-        iconContent={iconCamera}
-        placeholder="What are you looking for?"
-        onFocus={() =>navigation.navigate('Categories')}
-      />
-    )
-  }
-  
-  renderTabs = () => {
-    const { navigation } = this.props;
-
-    return (
-      <Block row style={styles.tabs}>
-        <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Categories')}>
-          <Block row middle>
-            <Icon name="grid" family="feather" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Categories</Text>
-          </Block>
-        </Button>
-        <Button shadowless style={styles.tab} onPress={() =>navigation.navigate('Categories')}>
-          <Block row middle>
-            <Icon size={16} name="camera-18" family="GalioExtra" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Best Deals</Text>
-          </Block>
-        </Button>
-      </Block>
-    )
-  }
-
-  renderProducts = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.products}>
-        <Block flex>
-          <Product product={products[0]} horizontal />
-          <Block flex row>
-            <Product product={products[1]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Product product={products[2]} />
-          </Block>
-          <Product product={products[3]} horizontal />
-          <Product product={products[4]} full />
-        </Block>
-      </ScrollView>
-    )
-  }
-
   render() {
+    const { navigation } = this.props;
+
     return (
-      <Block flex center style={styles.home}>
-        {this.renderProducts()}
+      <Block flex style={styles.container}>
+        {/* Texte explicatif */}
+        <Block style={styles.header}>
+          <Text size={21} bold style={styles.title}>
+            Choisissez votre rôle
+          </Text>
+          <Text muted size={17} style={styles.subtitle}>
+            Réservez un service ou proposez le vôtre
+          </Text>
+        </Block>
+
+        {/* Sections pour Client et Prestataire */}
+        <Block flex style={styles.choices}>
+          <TouchableOpacity
+            style={styles.choice}
+            onPress={() => navigation.navigate('Categories')}
+          >
+            <Image source={clientImage} style={styles.image} />
+            <Text size={20} bold style={styles.choiceText}>
+              Client
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.choice}
+            onPress={() => navigation.navigate('Categories')}
+          >
+            <Image source={prestataireImage} style={styles.image} />
+            <Text size={20} bold style={styles.choiceText}>
+              Prestataire
+            </Text>
+          </TouchableOpacity>
+        </Block>
       </Block>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  home: {
-    width: width,    
-  },
-  search: {
-    height: 48,
-    width: width - 32,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 3,
+  container: {
+    width,
+    height,
+    backgroundColor: theme.COLORS.WHITE,
   },
   header: {
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: theme.COLORS.BLACK,
+    marginTop: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    marginBottom: 4,
+    color: theme.COLORS.BLACK,
+  },
+  subtitle: {
+    textAlign: 'center',
+    color: theme.COLORS.BLOCK,
+  },
+  choices: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  choice: {
+    width: width * 0.85, // Cadre large
+    backgroundColor: theme.COLORS.WHITE, // Fond blanc
+    borderRadius: 10,
+    paddingVertical: 20,
+    alignItems: 'center',
+    marginBottom: 20, // Espacement entre les cadres
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 4,
     },
-    shadowRadius: 8,
-    shadowOpacity: 0.2,
-    elevation: 4,
-    zIndex: 2,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 14, // Ombre plus marquée
   },
-  tabs: {
-    marginBottom: 24,
-    marginTop: 10,
-    elevation: 4,
+  image: {
+    width: 160, // Image agrandie
+    height: 160,
+    marginBottom: 10,
+    resizeMode: 'contain',
   },
-  tab: {
-    backgroundColor: theme.COLORS.TRANSPARENT,
-    width: width * 0.50,
-    borderRadius: 0,
-    borderWidth: 0,
-    height: 24,
-    elevation: 0,
-  },
-  tabTitle: {
-    lineHeight: 19,
-    fontWeight: '300'
-  },
-  divider: {
-    borderRightWidth: 0.3,
-    borderRightColor: theme.COLORS.MUTED,
-  },
-  products: {
-    width: width - theme.SIZES.BASE * 2,
-    paddingVertical: theme.SIZES.BASE * 2,
+  choiceText: {
+    color: theme.COLORS.BLACK,
+    textAlign: 'center',
   },
 });

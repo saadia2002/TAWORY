@@ -244,4 +244,23 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+//recuperer un prestataire avec son id
+// Route pour récupérer un utilisateur par ID
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password'); // Exclure le mot de passe
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 module.exports = router;

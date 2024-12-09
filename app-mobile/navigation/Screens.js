@@ -14,7 +14,8 @@ import SettingsScreen from "../screens/Settings";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import CategoriesScreen from "../screens/Categories";
-import ServicesScreen from '../screens/ServicesScreen';
+import SignUp from "../screens/signUp";
+import ServicesScreen from "../screens/ServicesScreen";
 
 const { width } = Dimensions.get("screen");
 
@@ -98,15 +99,11 @@ function CategoriesStack(props) {
         component={CategoriesScreen}
         options={{
           header: ({ navigation, scene }) => (
-            <Header
-              title="Categories"
-              scene={scene}
-              navigation={navigation}
-            />
+            <Header title="Categories" scene={scene} navigation={navigation} />
           ),
         }}
       />
-      
+
       <Stack.Screen
         name="Services"
         component={ServicesScreen}
@@ -417,16 +414,16 @@ function AppStack(props) {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Sign Up"
-        component={ProScreen}
+        component={SignUp}
         options={{
-          drawerIcon: ({ focused }) => (
-            <Icon
-              size={16}
-              name="md-person-add"
-              family="ionicon"
-              color={focused ? "white" : materialTheme.COLORS.MUTED}
+          header: ({ navigation, scene }) => (
+            <Header
+              back
+              title="Sign Up"
+              navigation={navigation}
+              scene={scene}
             />
           ),
         }}

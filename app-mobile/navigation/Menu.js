@@ -1,31 +1,61 @@
-import React from "react";
-import { TouchableWithoutFeedback, ScrollView, StyleSheet, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  TouchableWithoutFeedback,
+  ScrollView,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import { useSafeArea } from "react-native-safe-area-context";
 
-import { Icon, Drawer as DrawerCustomItem } from '../components/';
-import { Images, materialTheme } from "../constants/";
-
+import { Icon, Drawer as DrawerCustomItem } from "../components/";
+import { materialTheme } from "../constants/";
+import { REACT_APP_API_URL } from "@env";
 
 function CustomDrawerContent({
   drawerPosition,
   navigation,
-  profile,
   focused,
   state,
   ...rest
 }) {
   const insets = useSafeArea();
-  const screens = [
-    "Home",
-    "Woman",
-    "Man",
-    "Kids",
-    "New Collection",
-    "Profile",
-    "Settings",
-    "Components"
-  ];
+  const screens = ["Home", "Profile", "Settings"];
+
+  // État pour stocker les données utilisateur
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${REACT_APP_API_URL}/api/users/67435f93e583c8349d1a79df`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données:", error);
+        setIsLoading(false); // Arrêter le chargement même en cas d'erreur
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Block flex center>
+        <ActivityIndicator size="large" color={theme.COLORS.PRIMARY} />
+      </Block>
+    );
+  }
+  const avatar = user?.image
+    ? `data:image/jpeg;base64,${user.image}`
+    : "https://via.placeholder.com/150";
+
+  // Valeurs par défaut si les données manquent
+  // const  = user?.image || "https://via.placeholder.com/90"; // Image par défaut
+  const name = user?.name || "John Doe";
+  const email = user?.email || "johndoe@example.com";
+
   return (
     <Block
       style={styles.container}
@@ -36,26 +66,15 @@ function CustomDrawerContent({
           onPress={() => navigation.navigate("Profile")}
         >
           <Block style={styles.profile}>
-            <Image source={{ uri: profile.avatar }} style={styles.avatar} />
+            <Image source={{ uri: avatar }} style={styles.avatar} />
             <Text h5 color={"white"}>
-              {profile.name}
+              {name}
+            </Text>
+            <Text size={14} color={"white"}>
+              {email}
             </Text>
           </Block>
         </TouchableWithoutFeedback>
-        <Block row>
-          <Block middle style={styles.pro}>
-            <Text size={16} color="white">
-              {profile.plan}
-            </Text>
-          </Block>
-          <Text size={16} muted style={styles.seller}>
-            {profile.type}
-          </Text>
-          <Text size={16} color={materialTheme.COLORS.WARNING}>
-            {profile.rating}{" "}
-            <Icon name="shape-star" family="GalioExtra" size={14} />
-          </Text>
-        </Block>
       </Block>
       <Block flex style={{ paddingLeft: 7, paddingRight: 14 }}>
         <ScrollView
@@ -63,8 +82,8 @@ function CustomDrawerContent({
             {
               paddingTop: insets.top * 0.4,
               paddingLeft: drawerPosition === "left" ? insets.left : 0,
-              paddingRight: drawerPosition === "right" ? insets.right : 0
-            }
+              paddingRight: drawerPosition === "right" ? insets.right : 0,
+            },
           ]}
           showsVerticalScrollIndicator={false}
         >
@@ -78,60 +97,44 @@ function CustomDrawerContent({
               />
             );
           })}
+          <DrawerCustomItem
+            title="Sign In"
+            navigation={navigation}
+            focused={state.index === screens.length ? true : false}
+          />
+          <DrawerCustomItem
+            title="Sign Up"
+            navigation={navigation}
+            onPress={() => navigation.navigate("Sign Up")} // Naviguer vers votre nouvelle page
+          />
         </ScrollView>
-      </Block>
-      <Block flex={0.3} style={{ paddingLeft: 7, paddingRight: 14 }}>
-        <DrawerCustomItem
-          title="Sign In"
-          navigation={navigation}
-          focused={state.index === 8 ? true : false}
-        />
-        <DrawerCustomItem
-          title="Sign Up"
-          navigation={navigation}
-          focused={state.index === 9 ? true : false}
-        />
       </Block>
     </Block>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   header: {
-    backgroundColor: '#4B1958',
+    backgroundColor: "#4B1958",
     paddingHorizontal: 28,
     paddingBottom: theme.SIZES.BASE,
     paddingTop: theme.SIZES.BASE * 2,
-    justifyContent: 'center',
-  },
-  footer: {
-    paddingHorizontal: 28,
-    justifyContent: 'flex-end'
+    justifyContent: "center",
+    alignItems: "center",
   },
   profile: {
+    alignItems: "center",
     marginBottom: theme.SIZES.BASE / 2,
   },
   avatar: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 90,
+    width: 90,
+    borderRadius: 50,
     marginBottom: theme.SIZES.BASE,
   },
-  pro: {
-    backgroundColor: materialTheme.COLORS.LABEL,
-    paddingHorizontal: 6,
-    marginRight: 8,
-    borderRadius: 4,
-    height: 19,
-    width: 38,
-  },
-  seller: {
-    marginRight: 16,
-  }
 });
 
 export default CustomDrawerContent;
