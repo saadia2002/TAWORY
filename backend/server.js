@@ -37,6 +37,9 @@ mongoose.connect(process.env.MONGO_URI)
   });
   
 // Utilisation des routes
+// In your main server file (app.js or server.js)
+app.use(express.json({ limit: '10mb' })); // Increase to 10MB
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);

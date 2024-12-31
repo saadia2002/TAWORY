@@ -15,6 +15,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-masked-view/masked-view": "0.2.8",
     "@react-navigation/compat": "^5.1.25",
     "@react-navigation/drawer": "6.4.1",
@@ -23,11 +24,14 @@
     "expo": "^48.0.17",
     "expo-asset": "~8.9.1",
     "expo-font": "~11.1.1",
+    "expo-image-manipulator": "~11.1.1",
+    "expo-image-picker": "~14.1.1",
     "expo-linear-gradient": "~12.1.2",
     "expo-splash-screen": "^0.18.2",
     "galio-framework": "^0.8.0",
     "react": "18.2.0",
     "react-native": "0.71.14",
+    "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-modal-dropdown": "1.0.2",
     "react-native-reanimated": "~2.14.4",
