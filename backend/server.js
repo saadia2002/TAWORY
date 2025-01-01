@@ -6,6 +6,8 @@ const authRoutes = require('./routes/auth');
 const serviceRoutes = require('./routes/serviceRoutes');
 const cors = require('cors');
 const categoryRoutes = require('./routes/categoryRoutes'); // Importer les routes des catégories
+const reservationRoutes = require('./routes/reservationRoutes'); // Importing reservation routes
+// const { analyzeChatbotMessage } = require('./controllers/chatbootController');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -44,6 +46,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/reservations', reservationRoutes); 
 app.get('/', (req, res) => {
   res.send('API is running...');
 });

@@ -11,7 +11,7 @@ router.get('/services', serviceController.getAllServices);
 router.get('/services2', serviceController.getAllServiceswithProvider);
 
 // Route pour récupérer un service par ID
-router.get('/services/:id', serviceController.getServiceById);
+router.get('/:id', serviceController.getServiceById);
 
 // Route pour mettre à jour un service
 router.put('/services/:id', serviceController.updateService);

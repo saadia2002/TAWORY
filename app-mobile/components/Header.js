@@ -73,7 +73,7 @@ class Header extends React.Component {
         ]);
       case 'Categories':
         return ([
-          <ChatButton key='chat-categories' navigation={navigation} isWhite={white} />,
+          <ChatButton key='chat-categories' navigation={navigation} isWhite={white}  onPress={() => navigation.navigate('Login')}/>,
           <BasketButton key='basket-categories' navigation={navigation} isWhite={white} />
         ]);
       case 'Category':

@@ -41,10 +41,18 @@ exports.getAllServiceswithProvider = async (req, res) => {
 // Récupérer un service par ID
 exports.getServiceById = async (req, res) => {
   try {
-    const service = await Service.findById(req.params.id).populate('category serviceProvider reservations');
+    console.log('Service non trouvé',req.params.id);
+    const service = await Service.findById(req.params.id)
+    .populate({
+      path: 'serviceProvider',
+      match: { role: 'prestataire' }, // Filtre pour ne ramener que les prestataires
+      select: 'name image' // Inclut uniquement les champs nécessaires
+    });
     if (!service) {
+      console.log('Service non trouvé',req.params.id);
       return res.status(404).json({ message: 'Service non trouvé' });
     }
+    console.log('Service trouvé', service);
     res.status(200).json(service);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -16,6 +16,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CategoriesScreen from "../screens/Categories";
 import SignUp from "../screens/signUp";
 import ServicesScreen from "../screens/ServicesScreen";
+import ReservationScreen from "../screens/ReservationScreen";
 
 const { width } = Dimensions.get("screen");
 
@@ -112,6 +113,20 @@ function CategoriesStack(props) {
             <Header
               back
               title="Services"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Reservation"
+        component={ReservationScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              back
+              title="Reservation"
               scene={scene}
               navigation={navigation}
             />

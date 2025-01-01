@@ -49,7 +49,7 @@ export default function ServicesScreen({ navigation, route }) {
         {services.map((service) => (
           <TouchableOpacity 
             key={service._id} 
-            onPress={() => navigation.navigate('ServiceDetails', { serviceId: service._id })}
+            onPress={() => navigation.navigate('Reservation', { serviceId: service._id })}
           >
             <Block style={styles.serviceCard}>
               <View style={styles.imageContainer}>
