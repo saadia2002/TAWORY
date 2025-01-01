@@ -28,7 +28,8 @@ function CustomDrawerContent({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${REACT_APP_API_URL}/api/users/67435f93e583c8349d1a79df`)
+  
+    fetch(`${REACT_APP_API_URL}/api/users/673c784a56f169f2854ceaba`)
       .then((response) => response.json())
       .then((data) => {
         setUser(data);
@@ -105,7 +106,7 @@ function CustomDrawerContent({
           <DrawerCustomItem
             title="Sign Up"
             navigation={navigation}
-            onPress={() => navigation.navigate("Sign Up")} // Naviguer vers votre nouvelle page
+            onPress={() => navigation.navigate("Sign Up")} 
           />
         </ScrollView>
       </Block>

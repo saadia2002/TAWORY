@@ -14,7 +14,7 @@ import { Block, Text, theme } from 'galio-framework';
 const { width } = Dimensions.get('screen');
 const CARD_WIDTH = (width - (theme.SIZES.BASE * 4)) / 2;
 
-export default function Categories({ navigation }) {
+export default function CategoriesP({ navigation }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +53,7 @@ export default function Categories({ navigation }) {
               <TouchableOpacity
                 key={category._id}
                 style={styles.categoryCard}
-                onPress={() => navigation.navigate('Services', { category: category })}
+                onPress={() => navigation.navigate('AddService', { category: category })}
               >
                 {category.icon && (
                   <Image
