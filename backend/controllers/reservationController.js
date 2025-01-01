@@ -1,4 +1,5 @@
 // reservationController.js
+const Client = require('../models/Client');
 const Reservation = require('../models/Reservation');
 
 // Create a new reservation
