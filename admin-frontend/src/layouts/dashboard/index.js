@@ -1,20 +1,10 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+import React from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -23,8 +13,6 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 // Data
@@ -35,129 +23,180 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
+// Dashboard Content
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+    const { sales, tasks } = reportsLineChartData;
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
-              />
+    return (
+        <DashboardLayout>
+            <DashboardNavbar />
+
+            <MDBox py={3}>
+                <Grid container spacing={3}>
+                    {/* Services Card */}
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="dark"
+                                icon="business_center"
+                                title="Services Disponibles"
+                                count={120}
+                                percentage={{
+                                    color: "success",
+                                    amount: "+10%",
+                                    label: "plus que le mois dernier",
+                                }}
+                            />
+                        </MDBox>
+                    </Grid>
+
+                    {/* Reservations Card */}
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                icon="event"
+                                title="Réservations Actuelles"
+                                count="85"
+                                percentage={{
+                                    color: "success",
+                                    amount: "+15%",
+                                    label: "plus que la semaine dernière",
+                                }}
+                            />
+                        </MDBox>
+                    </Grid>
+
+                    {/* Revenue Card */}
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="success"
+                                icon="attach_money"
+                                title="Revenus des Services"
+                                count="45k"
+                                percentage={{
+                                    color: "success",
+                                    amount: "+5%",
+                                    label: "plus que le mois dernier",
+                                }}
+                            />
+                        </MDBox>
+                    </Grid>
+
+                    {/* Active Users Card */}
+                    <Grid item xs={12} md={6} lg={3}>
+                        <MDBox mb={1.5}>
+                            <ComplexStatisticsCard
+                                color="primary"
+                                icon="person"
+                                title="Utilisateurs Actifs"
+                                count="+320"
+                                percentage={{
+                                    color: "success",
+                                    amount: "",
+                                    label: "Juste mis à jour",
+                                }}
+                            />
+                        </MDBox>
+                    </Grid>
+                </Grid>
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
+
+            {/* Additional Statistics Cards */}
+
+            {/* Description Section with Image */}
+            <MDBox py={3}>
+                <Grid container spacing={3} alignItems="center">
+                    {/* Text Section */}
+                    <Grid item xs={12} md={6}>
+                        <Card sx={{ backgroundColor: "#fff", boxShadow: 5, borderRadius: 2, padding: 3 }}>
+                            <CardContent>
+                                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: "#333" }}>
+                                    Bienvenue sur notre plateforme
+                                </Typography>
+                                <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 2 }}>
+                                    Découvrez notre gamme complète de services et produits. Nous nous engageons à offrir à nos clients des solutions personnalisées et de qualité, adaptées à leurs besoins spécifiques. Explorez nos offres et profitez d'une expérience utilisateur optimale.
+                                </Typography>
+                                <Typography variant="body2" color="textPrimary">
+                                    Nos services incluent la gestion de projets, des réservations en ligne faciles et sécurisées, ainsi qu'un suivi personnalisé pour chaque client. Vous pouvez également consulter les avis de nos clients et nous contacter directement via notre plateforme.
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    {/* Image Section */}
+                    <Grid item xs={12} md={6}>
+                        <img
+                            src="https://www.kaustrucks.nl/img/services.jpg" // Remplacez par l'URL de votre image
+                            alt="Illustration"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "8px",
+                                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                            }}
+                        />
+                    </Grid>
+                </Grid>
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+
+            {/* Orders Overview Section */}
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
+                <OrdersOverview />
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+
+            {/* Projects Section */}
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
-              />
+                <Projects />
             </MDBox>
-          </Grid>
-        </Grid>
-        <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox>
-        <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
-  );
+
+            {/* Comment Section */}
+            <MDBox mb={1.5}>
+                <Card sx={{ backgroundColor: "#fff", boxShadow: 5, borderRadius: 2 }}>
+                    <CardContent>
+                        <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: "#333" }}>
+                            Commentaires Clients
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
+                            Voici quelques commentaires récents de nos clients concernant nos services :
+                        </Typography>
+
+                        {/* Comment 1 */}
+                        <MDBox mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="body2" color="textPrimary" sx={{ flex: 1 }}>
+                                "Le service est excellent, très réactif et professionnel!"
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" sx={{ marginLeft: 2 }}>
+                                - Client A
+                            </Typography>
+                        </MDBox>
+
+                        {/* Comment 2 */}
+                        <MDBox mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="body2" color="textPrimary" sx={{ flex: 1 }}>
+                                "Très satisfait des services, à recommander à d'autres."
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" sx={{ marginLeft: 2 }}>
+                                - Client B
+                            </Typography>
+                        </MDBox>
+
+                        {/* Comment 3 */}
+                        <MDBox mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="body2" color="textPrimary" sx={{ flex: 1 }}>
+                                "La qualité a augmenté, mais les délais sont parfois longs."
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" sx={{ marginLeft: 2 }}>
+                                - Client C
+                            </Typography>
+                        </MDBox>
+                    </CardContent>
+                </Card>
+            </MDBox>
+
+            <Footer />
+        </DashboardLayout>
+    );
 }
 
 export default Dashboard;

@@ -27,9 +27,15 @@ const serviceSchema = new mongoose.Schema({
   reservations: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Reservation'
-  }]
+  }],
+  status: {
+    type: String,
+    enum: ['active', 'inactive'] ,// Liste des valeurs valides
+    default: 'inactive'
+
+  }
 }, {
-  timestamps: true
+  timestamps: true // Ajoute createdAt et updatedAt
 });
 
 const Service = mongoose.model('Service', serviceSchema);

@@ -1,9 +1,11 @@
 const Service = require('../models/Service');
 
+const emailjs = require('emailjs-com');
 // Créer un service
 exports.createService = async (req, res) => {
   try {
     const service = new Service(req.body);
+    console.log(service);
     await service.save();
     res.status(201).json(service);
   } catch (error) {
@@ -30,7 +32,24 @@ exports.getAllServiceswithProvider = async (req, res) => {
         match: { role: 'prestataire' }, // Filtre pour ne ramener que les prestataires
         select: 'name image' // Inclut uniquement les champs nécessaires
       });
+  console.log(services);
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
+exports.getAllServiceswithemailprovider = async (req, res) => {
+  try {
+    // Populate the serviceProvider field with user data where the role is 'prestataire'
+    const services = await Service.find()
+        .populate({
+          path: 'serviceProvider',
+          match: { role: 'prestataire' }, // Filtre pour ne ramener que les prestataires
+          select: 'name email' // Inclut uniquement les champs nécessaires
+        });
+    console.log(services);
     res.status(200).json(services);
   } catch (error) {
     console.error('Error fetching services:', error);
@@ -54,6 +73,7 @@ exports.getServiceById = async (req, res) => {
 // Mettre à jour un service
 exports.updateService = async (req, res) => {
   try {
+    console.log("Update service data:", req.body);
     const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!service) {
       return res.status(404).json({ message: 'Service non trouvé' });
@@ -64,10 +84,46 @@ exports.updateService = async (req, res) => {
   }
 };
 
+
+
+
+// Assurez-vous d'avoir installé node-fetch si vous ne l'avez pas déjà fait
+
+exports.activerService = async (req, res) => {
+  try {
+    console.log("Données reçues pour la mise à jour du service:", req.body);
+
+    // Mise à jour du service dans la base de données
+    const service = await Service.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+    );
+
+    if (!service) {
+      console.warn("Service non trouvé avec l'ID:", req.params.id);
+      return res.status(404).json({ message: 'Service non trouvé' });
+    }
+
+    //
+
+    // Réponse en cas de succès
+    return res.status(200).json({ message: "Service mis à jour avec succès", service });
+
+  } catch (error) {
+    console.error("Erreur lors de l'activation du service:", error.message || error);
+    return res.status(500).json({ message: "Une erreur est survenue", error: error.message || error });
+  }
+};
+
+
+
+
 // Supprimer un service
 exports.deleteService = async (req, res) => {
   try {
     const service = await Service.findByIdAndDelete(req.params.id);
+    console.log("Updated service:", service);
     if (!service) {
       return res.status(404).json({ message: 'Service non trouvé' });
     }

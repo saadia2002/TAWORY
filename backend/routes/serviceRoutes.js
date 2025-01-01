@@ -7,6 +7,7 @@ router.post('/services', serviceController.createService);
 
 // Route pour récupérer tous les services
 router.get('/services', serviceController.getAllServices);
+router.get('/service', serviceController.getAllServiceswithemailprovider);
 
 router.get('/services2', serviceController.getAllServiceswithProvider);
 
@@ -15,6 +16,7 @@ router.get('/services/:id', serviceController.getServiceById);
 
 // Route pour mettre à jour un service
 router.put('/services/:id', serviceController.updateService);
+router.put('/activer/:id', serviceController.activerService);
 
 // Route pour supprimer un service
 router.delete('/services/:id', serviceController.deleteService);

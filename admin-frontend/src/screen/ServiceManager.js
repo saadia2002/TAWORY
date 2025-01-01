@@ -123,12 +123,29 @@ const ServiceManager = () => {
           serviceProvider: "",
         });
         setEditMode(false);
+        setAlert({
+          show: true,
+          message: editMode
+            ? "Service updated successfully!"
+            : "Attendre le service jusqu'à ce qu'il soit accepté par l'admin.!",
+          type: "success",
+        });
       } else {
         const errorData = await response.json();
         console.error("Error response from server:", errorData);
+        setAlert({
+          show: true,
+          message: "Failed to save service.",
+          type: "error",
+        });
       }
     } catch (error) {
       console.error("Error saving service:", error);
+      setAlert({
+        show: true,
+        message: "Error occurred while saving the service.",
+        type: "error",
+      });
     }
   };
 
@@ -162,6 +179,13 @@ const ServiceManager = () => {
     },
   ];
 
+  useEffect(() => {
+    if (alert.show) {
+      const timer = setTimeout(() => setAlert({ show: false, message: "", type: "" }), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -183,6 +207,20 @@ const ServiceManager = () => {
                   Services Management
                 </MDTypography>
               </MDBox>
+              {alert.show && (
+                <MDBox mb={3}>
+                  <div
+                    style={{
+                      padding: "10px",
+                      backgroundColor: alert.type === "success" ? "green" : "red",
+                      color: "white",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {alert.message}
+                  </div>
+                </MDBox>
+              )}
               <MDBox pt={3}>
                 <MDBox p={3}>
                   <Grid container spacing={3}>
