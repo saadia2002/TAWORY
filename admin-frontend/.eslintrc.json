@@ -1,8 +1,5 @@
 {
-
-
-
-"env": {
+  "env": {
     "browser": true,
     "es2021": true
   },
@@ -21,8 +18,8 @@
       {
         "endOfLine": "auto"
       }
-
     ],
+    "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
     "react/display-name": "off",
     "default-param-last": "off",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
@@ -17,6 +17,8 @@ function Login() {
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,7 +41,9 @@ function Login() {
         localStorage.setItem("token", data.token); // Stocker le token
         setSuccess("Login successful!");
         setError("");
-        // Rediriger ou gérer l'utilisateur connecté
+
+        // Rediriger vers la page dashboard
+        navigate("/dashboard"); // Remplacez par le chemin du tableau de bord
       } else {
         setError(data.msg || "Error logging in");
       }

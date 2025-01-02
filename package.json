@@ -3,5 +3,8 @@
     "axios": "^1.7.7",
     "expo-image-manipulator": "^13.0.5",
     "react-native-dotenv": "^3.4.11"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
   }
 }

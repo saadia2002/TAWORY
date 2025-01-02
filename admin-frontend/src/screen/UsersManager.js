@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
@@ -11,6 +11,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import PropTypes from "prop-types";
 
 // Define prop types at the top level
 const UserShape = PropTypes.shape({
@@ -26,7 +27,6 @@ const RowShape = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   original: UserShape.isRequired,
 });
-
 const ImageCell = ({ value }) => {
   return value ? (
     <img
@@ -38,7 +38,7 @@ const ImageCell = ({ value }) => {
 };
 
 ImageCell.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.string, // Ajouter la validation de la prop 'value'
 };
 
 const RoleCell = ({ value }) => {

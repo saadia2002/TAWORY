@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { REACT_APP_API_URL } from '@env';
-import { 
-  StyleSheet, 
-  Dimensions, 
-  ScrollView, 
-  Image, 
+import React, { useState, useEffect } from "react";
+import { REACT_APP_API_URL } from "@env";
+import {
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Image,
   ActivityIndicator,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+} from "react-native";
+import { Block, Text, theme } from "galio-framework";
 
-const { width } = Dimensions.get('screen');
-const CARD_WIDTH = (width - (theme.SIZES.BASE * 4)) / 2;
+const { width } = Dimensions.get("screen");
+const CARD_WIDTH = (width - theme.SIZES.BASE * 4) / 2;
 
 export default function Categories({ navigation }) {
   const [categories, setCategories] = useState([]);
@@ -30,7 +30,7 @@ export default function Categories({ navigation }) {
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,9 @@ export default function Categories({ navigation }) {
               <TouchableOpacity
                 key={category._id}
                 style={styles.categoryCard}
-                onPress={() => navigation.navigate('Services', { category: category })}
+                onPress={() =>
+                  navigation.navigate("Services", { category: category })
+                }
               >
                 {category.icon && (
                   <Image
@@ -71,8 +73,8 @@ export default function Categories({ navigation }) {
                 <Text size={16} style={styles.categoryName} numberOfLines={1}>
                   {category.name}
                 </Text>
-                <Text 
-                  size={12} 
+                <Text
+                  size={12}
                   style={styles.categoryDescription}
                   numberOfLines={2}
                 >
@@ -90,7 +92,11 @@ export default function Categories({ navigation }) {
   return (
     <Block flex>
       {loading ? (
-        <ActivityIndicator size="large" color={theme.COLORS.PRIMARY} style={styles.loader} />
+        <ActivityIndicator
+          size="large"
+          color={theme.COLORS.PRIMARY}
+          style={styles.loader}
+        />
       ) : (
         renderCategories()
       )}
@@ -103,8 +109,8 @@ const styles = StyleSheet.create({
     padding: theme.SIZES.BASE,
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: theme.SIZES.BASE,
   },
   categoryCard: {
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
     padding: theme.SIZES.BASE,
     width: CARD_WIDTH,
     height: CARD_WIDTH * 1.2,
-    alignItems: 'center',
+    alignItems: "center",
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -131,20 +137,20 @@ const styles = StyleSheet.create({
   },
   placeholderIcon: {
     backgroundColor: theme.COLORS.GREY,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   categoryName: {
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 4,
-    textAlign: 'center',
+    textAlign: "center",
   },
   categoryDescription: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

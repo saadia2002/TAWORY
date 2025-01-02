@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
 import MDBox from "components/MDBox";
@@ -8,17 +8,17 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
-
 function Cover() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    role: "user",
+    dateOfBirth: "2000-01-01",
   });
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
+  const navigate = useNavigate(); // Initialize navigate
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -28,9 +28,8 @@ function Cover() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch("http://localhost:5000/api/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,15 +41,20 @@ function Cover() {
       console.log("Response Data:", data);
       if (response.ok) {
         setSuccess("User created successfully!");
-        setError("");
+        setError(""); // Clear any previous error
+        // Redirect to sign-in page after successful registration
+        setTimeout(() => {
+          navigate("/authentication/sign-in");
+        }, 1500); // Redirect after a short delay
       } else {
         setError(data.message || "Error creating user");
+        setSuccess(""); // Clear success message if error occurs
       }
     } catch (err) {
       setError("Error connecting to the server");
+      setSuccess(""); // Clear success message if error occurs
     }
   };
-
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -107,6 +111,35 @@ function Cover() {
                 onChange={handleChange}
               />
             </MDBox>
+            {/* Role */}
+            <MDBox mb={2}>
+              <MDInput
+                type="select"
+                label="Role"
+                name="role"
+                variant="standard"
+                fullWidth
+                value={formData.role}
+                onChange={handleChange}
+              >
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+                <option value="prestataire">Prestataire</option>
+              </MDInput>
+            </MDBox>
+            {/* Date of Birth */}
+            <MDBox mb={2}>
+              <MDInput
+                type="date"
+                label="Date of Birth"
+                name="dateOfBirth"
+                variant="standard"
+                fullWidth
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+              />
+            </MDBox>
+
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
               <MDTypography
@@ -156,5 +189,4 @@ function Cover() {
     </CoverLayout>
   );
 }
-
 export default Cover;

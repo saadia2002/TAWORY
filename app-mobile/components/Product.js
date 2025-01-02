@@ -1,28 +1,58 @@
-import React from 'react';
-import { withNavigation } from '@react-navigation/compat';
-import { StyleSheet, Dimensions, Image, TouchableWithoutFeedback } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import React from "react";
+import { withNavigation } from "@react-navigation/compat";
+import {
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { Block, Text, theme } from "galio-framework";
 
-import materialTheme from '../constants/Theme';
+import materialTheme from "../constants/Theme";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 class Product extends React.Component {
   render() {
-    const { navigation, product, horizontal, full, style, priceColor, imageStyle } = this.props;
-    const imageStyles = [styles.image, full ? styles.fullImage : styles.horizontalImage, imageStyle];
+    const {
+      navigation,
+      product,
+      horizontal,
+      full,
+      style,
+      priceColor,
+      imageStyle,
+    } = this.props;
+    const imageStyles = [
+      styles.image,
+      full ? styles.fullImage : styles.horizontalImage,
+      imageStyle,
+    ];
 
     return (
-      <Block row={horizontal} card flex style={[styles.product, styles.shadow, style]}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Pro', { product: product })}>
+      <Block
+        row={horizontal}
+        card
+        flex
+        style={[styles.product, styles.shadow, style]}
+      >
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Pro", { product: product })}
+        >
           <Block flex style={[styles.imageContainer, styles.shadow]}>
             <Image source={{ uri: product.image }} style={imageStyles} />
           </Block>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Pro', { product: product })}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Pro", { product: product })}
+        >
           <Block flex space="between" style={styles.productDescription}>
-            <Text size={14} style={styles.productTitle}>{product.title}</Text>
-            <Text size={12} muted={!priceColor} color={priceColor}>${product.price}</Text>
+            <Text size={14} style={styles.productTitle}>
+              {product.title}
+            </Text>
+            <Text size={12} muted={!priceColor} color={priceColor}>
+              ${product.price}
+            </Text>
           </Block>
         </TouchableWithoutFeedback>
       </Block>
@@ -41,7 +71,7 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     paddingBottom: 6,
   },
   productDescription: {
@@ -57,7 +87,7 @@ const styles = StyleSheet.create({
   },
   horizontalImage: {
     height: 122,
-    width: 'auto',
+    width: "auto",
   },
   fullImage: {
     height: 215,

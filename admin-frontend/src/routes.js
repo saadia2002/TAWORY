@@ -85,14 +85,11 @@ const routes = [
     component: <Services />,
   },
 
-
   {
-
     route: "/notifications",
     component: <Notifications />,
-
   },
- 
+
   {
     type: "collapse",
     name: "Sign In",

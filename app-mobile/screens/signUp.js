@@ -53,7 +53,7 @@ export default function SignUp({ navigation }) {
       if (status !== "granted") {
         Alert.alert(
           "Erreur",
-          "Nous avons besoin de votre permission pour accéder à la galerie"
+          "Nous avons besoin de votre permission pour accéder à la galerie",
         );
         return;
       }
@@ -83,7 +83,7 @@ export default function SignUp({ navigation }) {
       const manipResult = await ImageManipulator.manipulateAsync(
         uri,
         [{ resize: { width: 800 } }], // Resize to max width of 800px
-        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG } // Compress to 70% quality
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }, // Compress to 70% quality
       );
 
       const response = await fetch(manipResult.uri);

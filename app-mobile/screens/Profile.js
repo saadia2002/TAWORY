@@ -52,7 +52,7 @@ export default class Profile extends Component {
       if (!dateString) return "N/A";
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Intl.DateTimeFormat("en-US", options).format(
-        new Date(dateString)
+        new Date(dateString),
       );
     };
 
@@ -149,11 +149,15 @@ export default class Profile extends Component {
                 color="#c76cd9"
                 style={{ width: 40, height: 40 }}
               />
-               <Text bold size={12} style={{ marginBottom: 8 }}>
-                  Ajouter une service
-                </Text>
+              <Text bold size={12} style={{ marginBottom: 8 }}>
+                Ajouter une service
+              </Text>
             </Block>
-            <Text bold size={16} style={{ marginTop: 20, marginLeft: theme.SIZES.BASE }}>
+            <Text
+              bold
+              size={16}
+              style={{ marginTop: 20, marginLeft: theme.SIZES.BASE }}
+            >
               Mes services
             </Text>
           </ScrollView>

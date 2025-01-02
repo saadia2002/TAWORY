@@ -1,11 +1,11 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const userRoutes = require('./routes/userRoutes');
-const authRoutes = require('./routes/auth');
-const serviceRoutes = require('./routes/serviceRoutes');
-const cors = require('cors');
-const categoryRoutes = require('./routes/categoryRoutes'); // Importer les routes des catégories
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/auth");
+const serviceRoutes = require("./routes/serviceRoutes");
+const cors = require("cors");
+const categoryRoutes = require("./routes/categoryRoutes"); // Importer les routes des catégories
 
 // Load environment variables from .env file
 dotenv.config();
@@ -20,38 +20,39 @@ app.use(express.urlencoded({ extended: true })); // Pour traiter les données d'
 
 // Middleware to parse JSON data
 app.use(express.json());
-console.log(require('crypto').randomBytes(32).toString('hex'));
+console.log(require("crypto").randomBytes(32).toString("hex"));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('MongoDB connected');
+    console.log("MongoDB connected");
   })
   .catch((err) => {
-    console.error('MongoDB connection error:', err);
+    console.error("MongoDB connection error:", err);
   });
 
-  app.use((req, res, next) => {
-    console.log(`${req.method} request for '${req.url}'`);
-    next();
-  });
-  
+app.use((req, res, next) => {
+  console.log(`${req.method} request for '${req.url}'`);
+  next();
+});
+
 // Utilisation des routes
 // In your main server file (app.js or server.js)
-app.use(express.json({ limit: '10mb' })); // Increase to 10MB
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
-app.use('/api/users', userRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/categories', categoryRoutes);
-app.get('/', (req, res) => {
-  res.send('API is running...');
+app.use(express.json({ limit: "10mb" })); // Increase to 10MB
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/categories", categoryRoutes);
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
 // Start the server
 // app.listen(PORT, () => {
 //   console.log(`Server is running on http://localhost:${PORT}`);
 // });
-app.listen(5000, '0.0.0.0', () => {
-  console.log('Server is running on http://0.0.0.0:5000');
+app.listen(5000, "0.0.0.0", () => {
+  console.log("Server is running on http://0.0.0.0:5000");
 });
