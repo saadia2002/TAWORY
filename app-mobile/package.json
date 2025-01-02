@@ -31,6 +31,7 @@
     "galio-framework": "^0.8.0",
     "react": "18.2.0",
     "react-native": "0.71.14",
+    "react-native-dialog": "^9.3.0",
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-modal-dropdown": "1.0.2",

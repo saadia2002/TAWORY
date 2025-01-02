@@ -161,7 +161,21 @@ function CategoriesStack(props) {
             />
           ),
         }}
-      />
+      /> 
+      <Stack.Screen
+      name="Services"
+      component={ServicesScreen}
+      options={{
+        header: ({ navigation, scene }) => (
+          <Header
+            back
+            title="Services"
+            scene={scene}
+            navigation={navigation}
+          />
+        ),
+      }}
+    />
       <Stack.Screen
         name="Reservation"
         component={ReservationScreen}
