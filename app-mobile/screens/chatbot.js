@@ -10,6 +10,7 @@ import {
   TouchableOpacity 
 } from 'react-native';
 import { theme } from 'galio-framework';
+import { REACT_APP_API_URL } from '@env';
 
 const { width } = Dimensions.get('screen');
 const CARD_WIDTH = (width - (theme.SIZES.BASE * 4)) / 2;
@@ -30,7 +31,7 @@ const ChatbotScreen = () => {
     setResponse(null);
 
     try {
-      const res = await fetch('http://your-api-endpoint/chatbot', {
+      const res = await fetch(`${REACT_APP_API_URL}/api/reservations/chatbot`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
