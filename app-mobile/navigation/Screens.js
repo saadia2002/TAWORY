@@ -22,6 +22,7 @@ import SingIn from "../screens/signIn";
 import ServicesScreen from "../screens/ServicesScreen";
 import ReservationScreen from "../screens/ReservationScreen";
 import ChatbotScreen from "../screens/chatbot";
+import ReservationsScreen from "../screens/Reservations";
 
 const { width } = Dimensions.get("screen");
 
@@ -116,6 +117,19 @@ function CategoriesStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Choisissez la catégorie du service :"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Reservations"
+        component={ReservationsScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Mes Reservations"
               scene={scene}
               navigation={navigation}
             />

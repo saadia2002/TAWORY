@@ -25,7 +25,7 @@ export default function Categories({ navigation }) {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      console.log('jjj',REACT_APP_API_URL);
+      console.log('h',REACT_APP_API_URL);
       const response = await fetch(`${REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       setCategories(data);

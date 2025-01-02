@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         <Block flex style={styles.choices}>
           <TouchableOpacity
             style={styles.choice}
-            onPress={() => navigation.navigate("Categories")}
+            onPress={() => navigation.navigate("Categories", { screen: "Categories" })}
           >
             <Image source={clientImage} style={styles.image} />
             <Text size={20} bold style={styles.choiceText}>
@@ -39,7 +39,7 @@ export default class Home extends React.Component {
           <TouchableOpacity
             style={styles.choice}
             onPress={() =>
-              navigation.navigate("Categories", { screen: "CategoriesP" })
+              navigation.navigate("CategoriesP", { screen: "CategoriesP" })
             }
           >
             <Image source={prestataireImage} style={styles.image} />

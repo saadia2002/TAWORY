@@ -153,19 +153,44 @@ export default class Profile extends Component {
                 Ajouter une service
               </Text>
             </Block>
-            <Block middle style={{ marginVertical: theme.SIZES.BASE }}>
-              <Button
-                onlyIcon
-                icon="list"
-                iconFamily="font-awesome"
-                iconSize={30}
-                color="#17611b"
-                style={{ width: 40, height: 40, marginBottom: 10 }}
-                onPress={() => this.props.navigation.navigate("ServicesList")} // Vérifiez que "MyServices" existe dans vos routes
-              />
-              <Text bold size={12} style={{ marginBottom: 8 }}>
-                Consulter mes services
-              </Text>
+
+            <Block
+              row
+              space="between"
+              style={{
+                marginVertical: theme.SIZES.BASE,
+                paddingHorizontal: theme.SIZES.BASE * 2,
+              }}
+            >
+              <Block middle>
+                <Button
+                  onlyIcon
+                  icon="list"
+                  iconFamily="font-awesome"
+                  iconSize={30}
+                  color="#17611b"
+                  style={{ width: 40, height: 40, marginBottom: 10 }}
+                  onPress={() => this.props.navigation.navigate("ServicesList")}
+                />
+                <Text bold size={12} style={{ marginBottom: 8 }}>
+                  Consulter mes services
+                </Text>
+              </Block>
+
+              <Block middle>
+                <Button
+                  onlyIcon
+                  icon="calendar"
+                  iconFamily="font-awesome"
+                  iconSize={30}
+                  color="#17611b"
+                  style={{ width: 40, height: 40, marginBottom: 10 }}
+                  onPress={() => this.props.navigation.navigate("Reservations")}
+                />
+                <Text bold size={12} style={{ marginBottom: 8 }}>
+                  Consulter mes réservations
+                </Text>
+              </Block>
             </Block>
           </ScrollView>
         </Block>
