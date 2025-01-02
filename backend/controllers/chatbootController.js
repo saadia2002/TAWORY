@@ -1,45 +1,9 @@
 const axios = require('axios');
-const ServiceController = require('./serviceController');
-const ReservationController = require('./reservationController');
-const CategoryController = require('./categoryController');
-
-const functionMap = {
-  createService: ServiceController.createService,
-  getAllServices: ServiceController.getAllServices,
-  getServiceById: ServiceController.getServiceById,
-  createReservation: ReservationController.createReservation,
-  getAllReservations: ReservationController.getAllReservations,
-  getCategoryById: CategoryController.getCategoryById,
-  getAllCategories: CategoryController.getAllCategories,
-};
+const Service = require('../models/Service');
+const Reservation = require('../models/Reservation');
 
 const cleanMarkdownCodeBlocks = (text) => {
   return text.replace(/```[a-z]*\n?/g, '').trim();
-};
-
-const createMockResponse = () => {
-  let statusCode = 200;
-  let responseData = null;
-
-  const res = {
-    status: (code) => {
-      statusCode = code;
-      return res;
-    },
-    json: (data) => {
-      responseData = data;
-      return res;
-    },
-    send: (data) => {
-      responseData = data;
-      return res;
-    },
-    getResponse: () => ({
-      statusCode,
-      data: responseData
-    })
-  };
-  return res;
 };
 
 exports.handleChatbotMessage = async (req, res) => {
@@ -50,16 +14,19 @@ exports.handleChatbotMessage = async (req, res) => {
   }
   
   try {
-    // First, get all services to find the matching service
-    const mockRes = createMockResponse();
-    await ServiceController.getAllServices({}, mockRes);
-    const allServices = mockRes.getResponse().data;
+    // Get all services
+    const allServices = await Service.find();
 
-    // Extract service name from user text
+    // Extract service name, location and phone number
     const payload = {
       contents: [{
         parts: [{
-          text: `Find a service name in this text: "${text}". Return just the service name, no additional text or formatting.`
+          text: `Extract the following information from this text: "${text}". Return a JSON object with these fields:
+          {
+            "serviceName": "name of the service requested",
+            "location": "location/city mentioned",
+            "phoneNumber": "phone number if mentioned"
+          }`
         }]
       }]
     };
@@ -74,13 +41,13 @@ exports.handleChatbotMessage = async (req, res) => {
       }
     );
 
-    const serviceName = cleanMarkdownCodeBlocks(geminiResponse.data.candidates[0].content.parts[0].text);
-    console.log('Extracted service name:', serviceName);
+    const extractedInfo = JSON.parse(cleanMarkdownCodeBlocks(geminiResponse.data.candidates[0].content.parts[0].text));
+    console.log('Extracted information:', extractedInfo);
 
-    // Find the service in our database
+    // Find the service
     const service = allServices.find(s => 
-      s.name.toLowerCase() === serviceName.toLowerCase() ||
-      `${s.name} ${s.description}`.toLowerCase() === serviceName.toLowerCase()
+      s.name.toLowerCase() === extractedInfo.serviceName?.toLowerCase() ||
+      `${s.name} ${s.description}`.toLowerCase().includes(extractedInfo.serviceName?.toLowerCase())
     );
 
     if (!service) {
@@ -90,26 +57,47 @@ exports.handleChatbotMessage = async (req, res) => {
       });
     }
 
-    // Create reservation with current date
+    // Create reservation with all extracted information
     const currentDate = new Date().toISOString();
     const reservationData = {
       date: currentDate,
       client: userid,
-      service: service._id
+      service: service._id,
+      lieu: extractedInfo.location,
+      telephone: extractedInfo.phoneNumber,
+      status: 'pending'
     };
 
-    // Create the reservation
-    const reservationRes = createMockResponse();
-    await ReservationController.createReservation(
-      { body: reservationData },
-      reservationRes
-    );
-    const reservationResponse = reservationRes.getResponse();
+    // Validate required fields
+    if (!extractedInfo.location || !extractedInfo.phoneNumber) {
+      const missingFields = [];
+      if (!extractedInfo.location) missingFields.push('location');
+      if (!extractedInfo.phoneNumber) missingFields.push('phone number');
 
+      return res.status(400).json({
+        message: `Please provide your ${missingFields.join(' and ')} to complete the reservation.`,
+        partialData: {
+          service: service,
+          location: extractedInfo.location,
+          phoneNumber: extractedInfo.phoneNumber
+        }
+      });
+    }
+
+    // Create the reservation directly using the Reservation model
+    const newReservation = new Reservation(reservationData);
+    await newReservation.save();
+    const populatedReservation = await newReservation.populate('service');
+
+    // Generate natural response
     const refinementPayload = {
       contents: [{
         parts: [{
-          text: `Convert this reservation response into a friendly message: ${JSON.stringify(reservationResponse.data)}`
+          text: `Create a friendly confirmation message with these details:
+          Service: ${service.name}
+          Location: ${extractedInfo.location}
+          Phone: ${extractedInfo.phoneNumber}
+          Date: ${new Date(currentDate).toLocaleString()}`
         }]
       }]
     };
@@ -126,9 +114,9 @@ exports.handleChatbotMessage = async (req, res) => {
 
     const naturalResponse = cleanMarkdownCodeBlocks(refinedResponse.data.candidates[0].content.parts[0].text);
 
-    res.status(reservationResponse.statusCode).json({
-      message: 'Processed successfully',
-      originalResponse: reservationResponse.data,
+    res.status(200).json({
+      message: 'Reservation created successfully',
+      originalResponse: populatedReservation,
       refinedResponse: naturalResponse,
       serviceDetails: service
     });
@@ -136,7 +124,7 @@ exports.handleChatbotMessage = async (req, res) => {
   } catch (error) {
     console.error('Error handling chatbot message:', error);
     res.status(500).json({ 
-      message: 'Internal server error.',
+      message: 'Internal server error',
       details: error.response?.data || error.message
     });
   }

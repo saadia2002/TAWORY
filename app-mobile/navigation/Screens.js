@@ -21,6 +21,7 @@ import SignUp from "../screens/signUp";
 import SingIn from "../screens/signIn";
 import ServicesScreen from "../screens/ServicesScreen";
 import ReservationScreen from "../screens/ReservationScreen";
+import ChatbotScreen from "../screens/chatbot";
 
 const { width } = Dimensions.get("screen");
 
@@ -500,6 +501,21 @@ function AppStack(props) {
           ),
         }}
       />
+      <Stack.Screen
+        name="chatbot"
+        component={ChatbotScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              back
+              title="Chatbot"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+        }}
+      />
+      
     </Drawer.Navigator>
   );
 }

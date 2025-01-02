@@ -98,6 +98,11 @@ function CustomDrawerContent({
               />
             );
           })}
+           <DrawerCustomItem
+            title="chatbot"
+            navigation={navigation}
+            onPress={() => navigation.navigate("Chatbot")}
+          />
           <DrawerCustomItem
             title="Sign In"
             navigation={navigation}
