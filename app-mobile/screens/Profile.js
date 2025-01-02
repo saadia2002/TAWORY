@@ -29,7 +29,7 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    fetch(`${REACT_APP_API_URL}/api/users/67435f93e583c8349d1a79df`)
+    fetch(`${REACT_APP_API_URL}/api/users/673c784a56f169f2854ceaba`)
       .then((response) => response.json())
       .then((data) => {
         this.setState({ user: data, isLoading: false });
@@ -42,7 +42,6 @@ export default class Profile extends Component {
 
   render() {
     const { user, isLoading } = this.state;
-
     const name = user?.name || "Rachel Brown";
     const role = user?.role || "Seller";
     const dateOfBirth = user?.dateOfBirth;
@@ -146,16 +145,28 @@ export default class Profile extends Component {
                 icon="plus"
                 iconFamily="font-awesome"
                 iconSize={30}
-                color="#c76cd9"
+                color="#17611b"
                 style={{ width: 40, height: 40 }}
+                onPress={() => this.props.navigation.navigate("Categories")}
               />
-               <Text bold size={12} style={{ marginBottom: 8 }}>
-                  Ajouter une service
-                </Text>
+              <Text bold size={12} style={{ marginBottom: 8 }}>
+                Ajouter une service
+              </Text>
             </Block>
-            <Text bold size={16} style={{ marginTop: 20, marginLeft: theme.SIZES.BASE }}>
-              Mes services
-            </Text>
+            <Block middle style={{ marginVertical: theme.SIZES.BASE }}>
+              <Button
+                onlyIcon
+                icon="list"
+                iconFamily="font-awesome"
+                iconSize={30}
+                color="#17611b"
+                style={{ width: 40, height: 40, marginBottom: 10 }}
+                onPress={() => this.props.navigation.navigate("ServicesList")} // Vérifiez que "MyServices" existe dans vos routes
+              />
+              <Text bold size={12} style={{ marginBottom: 8 }}>
+                Consulter mes services
+              </Text>
+            </Block>
           </ScrollView>
         </Block>
       </Block>

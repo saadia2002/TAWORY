@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import React from "react";
+import { StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import { Block, Text, theme } from "galio-framework";
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 
 // Importation des images locales
-import clientImage from '../constants/client.png';
-import prestataireImage from '../constants/pres.png';
+import clientImage from "../constants/client.png";
+import prestataireImage from "../constants/pres.png";
 
 export default class Home extends React.Component {
   render() {
@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         <Block flex style={styles.choices}>
           <TouchableOpacity
             style={styles.choice}
-            onPress={() => navigation.navigate('Categories')}
+            onPress={() => navigation.navigate("Categories")}
           >
             <Image source={clientImage} style={styles.image} />
             <Text size={20} bold style={styles.choiceText}>
@@ -38,7 +38,9 @@ export default class Home extends React.Component {
 
           <TouchableOpacity
             style={styles.choice}
-            onPress={() => navigation.navigate('Categories')}
+            onPress={() =>
+              navigation.navigate("Categories", { screen: "CategoriesP" })
+            }
           >
             <Image source={prestataireImage} style={styles.image} />
             <Text size={20} bold style={styles.choiceText}>
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   title: {
@@ -68,13 +70,13 @@ const styles = StyleSheet.create({
     color: theme.COLORS.BLACK,
   },
   subtitle: {
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.COLORS.BLOCK,
   },
   choices: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   choice: {
@@ -82,9 +84,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE, // Fond blanc
     borderRadius: 10,
     paddingVertical: 20,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20, // Espacement entre les cadres
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -97,10 +99,10 @@ const styles = StyleSheet.create({
     width: 160, // Image agrandie
     height: 160,
     marginBottom: 10,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   choiceText: {
     color: theme.COLORS.BLACK,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

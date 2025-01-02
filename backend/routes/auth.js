@@ -30,6 +30,28 @@ router.post('/login', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+router.post('/login2', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Vérifier si l'utilisateur existe
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Comparer directement le mot de passe
+    if (user.password !== password) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Connexion réussie
+    return res.status(200).json({ msg: 'Login successful' });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send('Server error');
+  }
+});
 // Route POST pour l'inscription
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;

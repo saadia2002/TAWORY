@@ -14,7 +14,11 @@ import SettingsScreen from "../screens/Settings";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import CategoriesScreen from "../screens/Categories";
+import AddServiceScreen from "../screens/AddService";
+import ServicesListScreen from "../screens/ServicesList";
+import CategoriesPScreen from "../screens/CategoriesP";
 import SignUp from "../screens/signUp";
+import SingIn from "../screens/signIn";
 import ServicesScreen from "../screens/ServicesScreen";
 import ReservationScreen from "../screens/ReservationScreen";
 
@@ -104,15 +108,54 @@ function CategoriesStack(props) {
           ),
         }}
       />
+      <Stack.Screen
+        name="CategoriesP"
+        component={CategoriesPScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Choisissez la catégorie du service :"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="AddService"
+        component={AddServiceScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Complétez les infos de votre service :"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="ServiceList"
+        component={AddServiceScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Complétez les infos de votre service :"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+        }}
+      />
 
       <Stack.Screen
-        name="Services"
-        component={ServicesScreen}
+        name="ServicesList"
+        component={ServicesListScreen}
         options={{
           header: ({ navigation, scene }) => (
             <Header
               back
-              title="Services"
+              title="Liste des Services"
               scene={scene}
               navigation={navigation}
             />
@@ -417,7 +460,7 @@ function AppStack(props) {
       />
       <Drawer.Screen
         name="Sign In"
-        component={ProScreen}
+        component={SingIn}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon
